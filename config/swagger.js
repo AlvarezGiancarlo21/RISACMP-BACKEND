@@ -5,9 +5,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Authentication API',
+      title: 'SWGIPRI System',
       version: '1.0.0',
-      description: 'A simple authentication API with Swagger documentation',
+      description: 'Sistema web para gestionar el mejoramiento de los procesos de la planta de produccion de Rudani',
     },
     servers: [
       {
