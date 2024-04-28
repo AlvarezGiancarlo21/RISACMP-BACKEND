@@ -6,7 +6,7 @@ const authRoutes = require('./api/routes/authRoutes');
 const app = express();
 const cors = require('cors');
 app.use(cors({
-    origin: 'http://localhost:3680', // Origen permitido
+    origin: 'http://localhost:3849', // Origen permitido
     optionsSuccessStatus: 200, // Algunos navegadores requieren esta opción
   }));
 // Connect to MongoDB
