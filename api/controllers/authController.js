@@ -21,6 +21,7 @@ exports.login = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
+        role: user.role, // Incluir el rol en el payload del token JWT
       },
     };
 
@@ -39,8 +40,9 @@ exports.login = async (req, res) => {
   }
 };
 
+
 exports.register = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password,role } = req.body;
   
     try {
       let user = await User.findOne({ username });
@@ -52,6 +54,7 @@ exports.register = async (req, res) => {
       user = new User({
         username,
         password,
+        role
       });
   
       const salt = await bcrypt.genSalt(10);
