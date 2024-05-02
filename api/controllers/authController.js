@@ -21,6 +21,7 @@ exports.login = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
+        username:user.user,
         role: user.role, // Asegúrate de incluir el rol del usuario en el payload del token JWT
       },
     };
@@ -30,7 +31,7 @@ exports.login = async (req, res) => {
         res.status(500).json({ msg: 'Error al generar el token' });
       } else {
         // Envía el token y el rol del usuario en la respuesta
-        res.json({ token, role:user.role });
+        res.json({ token,username:user.username, role:user.role });
       }
     });
   } catch (err) {
@@ -72,6 +73,20 @@ exports.register = async (req, res) => {
     try {
       const users = await User.find().select('-password');
       res.json(users);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  };
+  exports.getUserById = async (req, res) => {
+    const userId = req.params.id;
+  
+    try {
+      const user = await User.findById(userId).select('-password');
+      if (!user) {
+        return res.status(404).json({ msg: 'User not found' });
+      }
+      res.json(user);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');

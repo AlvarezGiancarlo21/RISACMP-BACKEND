@@ -73,6 +73,33 @@ router.post('/register', authController.register);
  */
 router.get('/users', authController.getAllUsers);
 
+
+/**
+ * @swagger
+ * /api/auth/users/{id}:
+ *   get:
+ *     summary: Get user by ID
+ *     tags: [Auth]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Returns the requested user
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+router.get('/users/:id', authController.getUserById);
+
+
+
+
 /**
  * @swagger
  * /api/auth/users/{id}:
