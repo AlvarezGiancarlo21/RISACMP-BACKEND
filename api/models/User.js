@@ -12,8 +12,8 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['admin', 'user'], // Define los roles permitidos
-    default: 'user', // Establece un valor predeterminado para el rol
+    enum: ['Jefe de Planta', 'Usuario','Calidad'], // Define los roles permitidos
+    default: 'Usuario', // Establece un valor predeterminado para el rol
   },
 });
 

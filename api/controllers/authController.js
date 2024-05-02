@@ -21,19 +21,18 @@ exports.login = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
-        role: user.role, // Incluir el rol en el payload del token JWT
+        role: user.role, // Asegúrate de incluir el rol del usuario en el payload del token JWT
       },
     };
 
-    jwt.sign(
-      payload,
-      'jwtSecret',
-      { expiresIn: 3600 },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
+    jwt.sign(payload, 'secretKey', { expiresIn: '1h' }, (err, token) => {
+      if (err) {
+        res.status(500).json({ msg: 'Error al generar el token' });
+      } else {
+        // Envía el token y el rol del usuario en la respuesta
+        res.json({ token, role:user.role });
       }
-    );
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
