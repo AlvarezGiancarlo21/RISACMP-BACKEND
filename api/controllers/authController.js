@@ -21,7 +21,7 @@ exports.login = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
-        username:user.user,
+        username:user.username,
         role: user.role, // Asegúrate de incluir el rol del usuario en el payload del token JWT
       },
     };
