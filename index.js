@@ -2,7 +2,7 @@ const express = require('express');
 const connectDB = require('./config/db');
 const { swaggerUi, specs } = require('./config/swagger');
 const authRoutes = require('./api/routes/authRoutes');
-
+const providerRoutes = require('./api/routes/providerRoutes'); // Importa las nuevas rutas de proveedores
 const app = express();
 const cors = require('cors');
 app.use(cors({
@@ -18,6 +18,7 @@ app.use(express.json());
 
 // Define Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/provider', providerRoutes); // Agrega las rutas de proveedores
 
 // Swagger Docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
