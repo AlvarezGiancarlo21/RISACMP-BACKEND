@@ -49,6 +49,19 @@ router.post('/login', authController.login);
  *                 type: string
  *               role:
  *                 type: string
+ *               nombres:
+ *                 type: string
+ *               apellidos:
+ *                 type: string
+ *               tipoDocumento:
+ *                 type: string
+ *               numeroDocumento:
+ *                  type: number
+ *               telefono:
+ *                  type: number
+ *               sexo:
+ *                  type: string
+ *               
  *     responses:
  *       200:
  *         description: User registered successfully

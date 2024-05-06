@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
+
   username: {
     type: String,
     required: true,
@@ -14,6 +15,32 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['Jefe de Planta', 'Usuario','Calidad','Encargado de Produccion','Jefe de Produccion','Logistico'], // Define los roles permitidos
     default: 'Usuario', // Establece un valor predeterminado para el rol
+  },
+  nombres:{
+    type: String,
+    required: true,
+  },
+  apellidos:{
+    type: String,
+    required: true,
+  },
+  tipoDocumento:{
+    type: String,
+    enum:['DNI','Carnet de Extranjeria','Pasaporte'],
+    required: true,
+  },
+  numeroDocumento:{
+    type: Number,
+    required: true,
+  },
+  telefono:{
+    type: Number,
+    required: true,
+  },
+  sexo:{
+    type: String,
+    enum:['Femenino','Masculino'],
+    required: true,
   },
 });
 

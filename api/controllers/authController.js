@@ -42,7 +42,7 @@ exports.login = async (req, res) => {
 
 
 exports.register = async (req, res) => {
-    const { username, password,role } = req.body;
+    const { username, password,role,nombres,apellidos,tipoDocumento,numeroDocumento,telefono,sexo} = req.body;
   
     try {
       let user = await User.findOne({ username });
@@ -54,7 +54,13 @@ exports.register = async (req, res) => {
       user = new User({
         username,
         password,
-        role
+        role,
+        nombres,
+        apellidos,
+        tipoDocumento,
+        numeroDocumento,
+        telefono,
+        sexo
       });
   
       const salt = await bcrypt.genSalt(10);
