@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['Jefe de Planta', 'Usuario','Calidad','Encargado de Produccion','Jefe de Produccion','Logistico'], // Define los roles permitidos
+    enum: ['Jefe de Planta', 'Usuario','Calidad','Encargado de Produccion','Jefe de Produccion','Logistico','Chef'], // Define los roles permitidos
     default: 'Usuario', // Establece un valor predeterminado para el rol
   },
   nombres:{
