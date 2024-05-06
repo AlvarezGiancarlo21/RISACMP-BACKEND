@@ -23,6 +23,12 @@ exports.login = async (req, res) => {
         id: user.id,
         username:user.username,
         role: user.role, // Asegúrate de incluir el rol del usuario en el payload del token JWT
+        nombres:user.nombres,
+        apellidos:user.apellidos,
+        tipoDocumento:user.tipoDocumento,
+        numeroDocumento:user.numeroDocumento,
+        telefono:user.telefono,
+        sexo:user.sexo,
       },
     };
 
@@ -31,7 +37,12 @@ exports.login = async (req, res) => {
         res.status(500).json({ msg: 'Error al generar el token' });
       } else {
         // Envía el token y el rol del usuario en la respuesta
-        res.json({ token,username:user.username, role:user.role });
+        res.json({ token,username:user.username, 
+          role:user.role,nombres:user.nombres,
+          apellidos:user.apellidos,
+          tipoDocumento:user.tipoDocumento,numeroDocumento:user.numeroDocumento,
+          telefono:user.telefono,
+          sexo:user.sexo});
       }
     });
   } catch (err) {
