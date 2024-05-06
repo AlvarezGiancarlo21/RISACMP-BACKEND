@@ -49,6 +49,34 @@ router.post('/register', providerController.registerProvider);
  */
 router.get('/', providerController.getAllProviders);
 
+/**
+ * @swagger
+ * /api/provider/export-excel:
+ *   get:
+ *     summary: Exportar proveedores a un archivo Excel
+ *     tags: [Provider]
+ *     responses:
+ *       200:
+ *         description: Archivo Excel generado exitosamente
+ *       500:
+ *         description: Error del servidor
+ */
+router.get('/export-excel', providerController.exportProvidersToExcel);
+
+/**
+ * @swagger
+ * /api/provider/export-pdf:
+ *   get:
+ *     summary: Exportar proveedores a un archivo PDF
+ *     tags: [Provider]
+ *     responses:
+ *       200:
+ *         description: Archivo PDF generado exitosamente
+ *       500:
+ *         description: Error del servidor
+ */
+router.get('/export-pdf', providerController.exportProvidersToPDF);
+
 
 /**
  * @swagger
