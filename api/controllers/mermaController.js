@@ -32,7 +32,7 @@ const actualizarMerma = async (req, res) => {
     try {
         const { id } = req.params;
         const merma = await Merma.findByIdAndUpdate(id, req.body);
-        if (merma) {
+        if (!merma) {
             return res.status(404).json({ message: "Merma no encontrada" });
         }
         const mermaActualizada = await Merma.findById(id);
@@ -46,7 +46,7 @@ const eliminarMerma = async (req, res) => {
     try {
         const { id } = req.params;
         const merma = await Merma.findByIdAndDelete(id);
-        if (merma) {
+        if (!merma) {
             return res.status(404).json({ message: "Merma no encontrada" });
         }
         res.status(200).json({ message: "Merma eliminada exitosamente" });

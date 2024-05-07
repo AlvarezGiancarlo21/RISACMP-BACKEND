@@ -76,7 +76,7 @@ router.post('/post', mermaController.crearMerma);
 
 /**
  * @swagger
- * /api/merma/put:
+ * /api/merma/put/{id}:
  *   put:
  *     summary: Actualizar una merma
  *     tags: [Merma]
@@ -116,7 +116,7 @@ router.put('/put/:id', mermaController.actualizarMerma);
 
 /**
  * @swagger
- * /api/merma/delete:
+ * /api/merma/delete/{id}:
  *   delete:
  *     summary: Eliminar una merma
  *     tags: [Merma]
