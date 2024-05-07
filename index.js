@@ -2,6 +2,7 @@ const express = require('express');
 const connectDB = require('./config/db');
 const { swaggerUi, specs } = require('./config/swagger');
 const authRoutes = require('./api/routes/authRoutes');
+const mermaRoutes = require('./api/routes/mermaRoutes');
 
 const app = express();
 const cors = require('cors');
@@ -18,6 +19,7 @@ app.use(express.json());
 
 // Define Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/merma', mermaRoutes);
 
 // Swagger Docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
