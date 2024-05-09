@@ -77,7 +77,7 @@ router.post('/register', authController.register);
  * /api/auth/users:
  *   get:
  *     summary: Get all users
- *     tags: [Auth]
+ *     tags: [User]
  *     responses:
  *       200:
  *         description: Returns all users
@@ -92,7 +92,7 @@ router.get('/users', authController.getAllUsers);
  * /api/auth/users/{id}:
  *   get:
  *     summary: Get user by ID
- *     tags: [Auth]
+ *     tags: [User]
  *     parameters:
  *       - in: path
  *         name: id
@@ -118,7 +118,7 @@ router.get('/users/:id', authController.getUserById);
  * /api/auth/users/{id}:
  *   put:
  *     summary: Update user by ID
- *     tags: [Auth]
+ *     tags: [User]
  *     parameters:
  *       - in: path
  *         name: id
@@ -152,7 +152,7 @@ router.put('/users/:id', authController.updateUserById);
  * /api/auth/users/{id}:
  *   delete:
  *     summary: Delete user by ID
- *     tags: [Auth]
+ *     tags: [User]
  *     parameters:
  *       - in: path
  *         name: id
@@ -170,5 +170,32 @@ router.put('/users/:id', authController.updateUserById);
  */
 router.delete('/users/:id', authController.deleteUserById);
 
+/**
+ * @swagger
+ * /api/auth/export-pdf:
+ *   get:
+ *     summary: Exportar usuarios a un archivo PDF
+ *     tags: [User]
+ *     responses:
+ *       200:
+ *         description: Archivo PDF generado exitosamente
+ *       500:
+ *         description: Error del servidor
+ */
+router.get('/export-pdf', authController.exportUsersToPDF);
+
+/**
+ * @swagger
+ * /api/auth/export-excel:
+ *   get:
+ *     summary: Exportar usuarios a un archivo Excel
+ *     tags: [User]
+ *     responses:
+ *       200:
+ *         description: Archivo Excel generado exitosamente
+ *       500:
+ *         description: Error del servidor
+ */
+router.get('/export-excel', authController.exportUsersToExcel);
 
 module.exports = router;

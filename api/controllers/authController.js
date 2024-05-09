@@ -1,7 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-
+const ExcelJS = require('exceljs');
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
 exports.login = async (req, res) => {
   const { username, password } = req.body;
 
@@ -154,4 +156,91 @@ exports.register = async (req, res) => {
       res.status(500).send('Server Error');
     }
   };
+  exports.exportUsersToPDF = async (req, res) => {
+    try {
+        const users = await User.find();
+
+        // Crear un nuevo documento PDF
+        const doc = new PDFDocument();
+
+        // Configurar la respuesta HTTP con el tipo de contenido
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename="usuarios.pdf"');
+
+        // Pipe el documento PDF directamente a la respuesta HTTP
+        doc.pipe(res);
+
+        // Agregar contenido al documento PDF
+        doc.fontSize(20).text('Lista de Usuarios', { align: 'center' });
+        doc.moveDown();
+
+        users.forEach(user => {
+            doc.fontSize(12).text(`Nombre: ${user.username}`);
+            doc.fontSize(12).text(`Rol: ${user.role}`);
+            doc.fontSize(12).text(`Nombres: ${user.nombres}`);
+            doc.fontSize(12).text(`Apellidos: ${user.apellidos}`);
+            doc.fontSize(12).text(`Tipo de documento: ${user.tipoDocumento}`);
+            doc.fontSize(12).text(`Numero de documento: ${user.numeroDocumento}`);
+            doc.fontSize(12).text(`Telefono: ${user.telefono}`);
+            doc.fontSize(12).text(`Sexo: ${user.sexo}`);
+            // Agrega más campos de usuario según sea necesario
+            doc.moveDown();
+        });
+
+        // Finaliza el documento PDF
+        doc.end();
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Error del servidor');
+    }
+};
+
+exports.exportUsersToExcel = async (req, res) => {
+    try {
+        const users = await User.find();
+
+        // Crear un nuevo workbook de Excel
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Usuarios');
+
+        // Agregar encabezados de columna
+        worksheet.columns = [
+            { header: 'Nombre', key: 'username', width: 20 },
+            { header: 'Rol', key: 'role', width: 20 },
+            { header: 'Nombres', key: 'nombres', width: 20 },
+            { header: 'Apellidos', key: 'apellidos', width: 20 },
+            { header: 'Tipo de documento', key: 'tipoDocumento', width: 20 },
+            { header: 'Numero de documento', key: 'numeroDocumento', width: 20 },
+            { header: 'Telfono', key: 'telefono', width: 20 },
+            { header: 'Sexo', key: 'sexo', width: 20 },
+            // Agrega más columnas según sea necesario
+        ];
+
+        // Agregar datos de usuarios a las filas del worksheet
+        users.forEach(user => {
+            worksheet.addRow({
+                username: user.username,
+                role: user.role,
+                nombres:user.nombres,
+                apellidos:user.apellidos,
+                tipoDocumento:user.tipoDocumento,
+                numeroDocumento:user.numeroDocumento,
+                telefono:user.telefono,
+                sexo:user.sexo,
+                // Agrega más campos de usuario según sea necesario
+            });
+        });
+
+        // Configurar la respuesta HTTP con el tipo de contenido
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', 'attachment; filename="usuarios.xlsx"');
+
+        // Escribir el workbook en la respuesta HTTP
+        await workbook.xlsx.write(res);
+        res.end();
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Error del servidor');
+    }
+};  
   
