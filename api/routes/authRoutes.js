@@ -7,7 +7,7 @@ const authController = require('../controllers/authController');
  * /api/auth/login:
  *   post:
  *     summary: Login to the application
- *     tags: [Auth]
+ *     tags: [Autenticacion]
  *     requestBody:
  *       required: true
  *       content:
@@ -35,7 +35,7 @@ router.post('/login', authController.login);
  * /api/auth/register:
  *   post:
  *     summary: Register a new user
- *     tags: [Auth]
+ *     tags: [Usuarios]
  *     requestBody:
  *       required: true
  *       content:
@@ -77,7 +77,7 @@ router.post('/register', authController.register);
  * /api/auth/users:
  *   get:
  *     summary: Get all users
- *     tags: [User]
+ *     tags: [Usuarios]
  *     responses:
  *       200:
  *         description: Returns all users
@@ -92,7 +92,7 @@ router.get('/users', authController.getAllUsers);
  * /api/auth/users/{id}:
  *   get:
  *     summary: Get user by ID
- *     tags: [User]
+ *     tags: [Usuarios]
  *     parameters:
  *       - in: path
  *         name: id
@@ -118,7 +118,7 @@ router.get('/users/:id', authController.getUserById);
  * /api/auth/users/{id}:
  *   put:
  *     summary: Update user by ID
- *     tags: [User]
+ *     tags: [Usuarios]
  *     parameters:
  *       - in: path
  *         name: id
@@ -152,7 +152,7 @@ router.put('/users/:id', authController.updateUserById);
  * /api/auth/users/{id}:
  *   delete:
  *     summary: Delete user by ID
- *     tags: [User]
+ *     tags: [Usuarios]
  *     parameters:
  *       - in: path
  *         name: id
@@ -175,7 +175,7 @@ router.delete('/users/:id', authController.deleteUserById);
  * /api/auth/export-pdf:
  *   get:
  *     summary: Exportar usuarios a un archivo PDF
- *     tags: [User]
+ *     tags: [Usuarios]
  *     responses:
  *       200:
  *         description: Archivo PDF generado exitosamente
@@ -189,7 +189,7 @@ router.get('/export-pdf', authController.exportUsersToPDF);
  * /api/auth/export-excel:
  *   get:
  *     summary: Exportar usuarios a un archivo Excel
- *     tags: [User]
+ *     tags: [Usuarios]
  *     responses:
  *       200:
  *         description: Archivo Excel generado exitosamente
