@@ -3,6 +3,7 @@ const connectDB = require('./config/db');
 const { swaggerUi, specs } = require('./config/swagger');
 const authRoutes = require('./api/routes/authRoutes');
 const mermaRoutes = require('./api/routes/mermaRoutes');
+const ordenCompraRoutes = require('./api/routes/ordenCompraRoutes');
 
 const providerRoutes = require('./api/routes/providerRoutes'); // Importa las nuevas rutas de proveedores
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.json());
 // Define Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/merma', mermaRoutes);
+app.use('/api/orden-compra',ordenCompraRoutes)
 app.use('/api/provider', providerRoutes); // Agrega las rutas de proveedores
 
 // Swagger Docs
