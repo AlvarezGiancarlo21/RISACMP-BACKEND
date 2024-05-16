@@ -113,30 +113,40 @@ exports.register = async (req, res) => {
   };
   exports.updateUserById = async (req, res) => {
     const userId = req.params.id;
-    const { username, password } = req.body;
-  
+    const { username, password, nombres, apellidos, sexo, tipoDocumento, numeroDocumento, telefono, role } = req.body;
+
     try {
-      let user = await User.findById(userId);
-  
-      if (!user) {
-        return res.status(404).json({ msg: 'User not found' });
-      }
-  
-      user.username = username || user.username;
-  
-      if (password) {
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
-      }
-  
-      await user.save();
-  
-      res.json({ msg: 'User updated successfully' });
+        let user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Actualizar campos solo si se proporcionan nuevos valores desde el frontend
+        if (username) user.username = username;
+        if (password) {
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(password, salt);
+        }
+
+        if (nombres) user.nombres = nombres;
+        if (apellidos) user.apellidos = apellidos;
+        if (sexo) user.sexo = sexo;
+        if (tipoDocumento) user.tipoDocumento = tipoDocumento;
+        if (numeroDocumento) user.numeroDocumento = numeroDocumento;
+        if (telefono) user.telefono = telefono;
+        if (role) user.role = role; // Asegúrate de incluir role en la desestructuración para evitar errores
+
+        await user.save();
+
+        res.json({ msg: 'User updated successfully' });
     } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
+        console.error(err.message);
+        res.status(500).send('Server Error');
     }
-  };
+};
+
+  
   
   exports.deleteUserById = async (req, res) => {
     const userId = req.params.id;

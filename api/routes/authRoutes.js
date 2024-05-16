@@ -135,9 +135,21 @@ router.get('/users/:id', authController.getUserById);
  *             properties:
  *               username:
  *                 type: string
- *               password:
+ *               role:
  *                 type: string
- *     responses:
+ *               nombres:
+ *                 type: string
+ *               apellidos:
+ *                 type: string
+ *               tipoDocumento:
+ *                 type: string
+ *               numeroDocumento:
+ *                  type: number
+ *               telefono:
+ *                  type: number
+ *               sexo:
+ *                  type: string
+ *       responses:
  *       200:
  *         description: User updated successfully
  *       404:
