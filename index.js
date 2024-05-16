@@ -32,6 +32,10 @@ const PORT = process.env.PORT || 3000;
 
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+console.log('localhost:3000')
 // Habilita cors con opciones específicas
+app.use(express.static('public')); // Sirve archivos estáticos desde la carpeta 'public' (crea esta carpeta si no existe)
 
-  
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/welcome.html'); 
+});
