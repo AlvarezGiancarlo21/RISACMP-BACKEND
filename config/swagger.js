@@ -5,7 +5,7 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'SWGIPRI System',
+      title: 'RISACMP System',
       version: '1.0.0',
       description: 'Sistema web para gestionar el mejoramiento de los procesos de la planta de produccion de Rudani',
     },
