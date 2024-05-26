@@ -4,10 +4,35 @@ const User = require('../models/User');
 const ExcelJS = require('exceljs');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
+const multer = require('multer'); // Importa multer
 
-// carga de archivos
-const multer = require('multer');
-const path = require('path');
+//Implementacion de AWS para la carga de archivos y documentos
+const AWS = require('aws-sdk');
+const multerS3 = require('multer-s3');
+
+// Configura AWS S3
+const s3 = new AWS.S3({
+  accessKeyId: 'AKIA4MTWJXPAMMTCXCVI',
+  secretAccessKey: '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',
+});
+
+// Configura multer para cargar archivos en S3
+const uploadS3 = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'awsrisacmpproyect',
+    acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key: function (req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname);
+    }
+  })
+});
+
+// Exportar multer upload para usarlo en las rutas
+
+
+// Configuración de multer para carga de archivos local
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -18,11 +43,11 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+// Exportar multer uploadS3 para usarlo en las rutas
+exports.uploadS3 = uploadS3;
 
-
-
-
-
+// Exportar multer upload para usarlo en las rutas
+exports.upload = upload;
 
 
 exports.login = async (req, res) => {
@@ -75,41 +100,6 @@ exports.login = async (req, res) => {
 };
 
 
-// exports.register = async (req, res) => {
-//     const { username, password,role,nombres,apellidos,tipoDocumento,numeroDocumento,telefono,sexo} = req.body;
-  
-//     try {
-//       let user = await User.findOne({ username });
-  
-//       if (user) {
-//         return res.status(400).json({ msg: 'User already exists' });
-//       }
-  
-//       user = new User({
-//         username,
-//         password,
-//         role,
-//         nombres,
-//         apellidos,
-//         tipoDocumento,
-//         numeroDocumento,
-//         telefono,
-//         sexo
-//       });
-  
-//       const salt = await bcrypt.genSalt(10);
-//       user.password = await bcrypt.hash(password, salt);
-  
-//       await user.save();
-  
-//       res.json({ msg: 'User registered successfully' });
-//     } catch (err) {
-//       console.error(err.message);
-//       res.status(500).send('Server Error');
-//     }
-//   };
-
-
 
 
 exports.register = async (req, res) => {
@@ -135,7 +125,10 @@ exports.register = async (req, res) => {
       sexo,
       cv, // Guardar la ruta del archivo
     });
-
+    if (req.file) {
+      const fileUrl = req.file.location; // Obtiene la URL del archivo en S3
+      user.cv = fileUrl;
+    }
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 
@@ -147,9 +140,6 @@ exports.register = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
-
-// Exportar multer upload para usarlo en las rutas
-exports.upload = upload;
 
 
 
@@ -322,4 +312,5 @@ exports.exportUsersToExcel = async (req, res) => {
         res.status(500).send('Error del servidor');
     }
 };  
-  
+// Exportar multer upload para usarlo en las rutas
+exports.upload = upload;
