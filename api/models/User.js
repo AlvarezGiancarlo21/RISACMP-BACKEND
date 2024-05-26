@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema({
     enum:['Femenino','Masculino'],
     required: true,
   },
+  cv: {
+    type: String, // Almacenaremos la ruta del archivo en el sistema de archivos
+    required: false, // No lo haremos obligatorio
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);

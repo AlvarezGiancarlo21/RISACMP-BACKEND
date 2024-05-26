@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 
+// carga de archivos
+const upload = authController.upload;
+
+
+
 /**
  * @swagger
  * /api/auth/login:
@@ -39,7 +44,7 @@ router.post('/login', authController.login);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -61,7 +66,9 @@ router.post('/login', authController.login);
  *                  type: number
  *               sexo:
  *                  type: string
- *               
+ *               cv:
+ *                  type: string
+ *                  format: binary
  *     responses:
  *       200:
  *         description: User registered successfully
@@ -70,7 +77,7 @@ router.post('/login', authController.login);
  *       500:
  *         description: Server error
  */
-router.post('/register', authController.register);
+router.post('/register', upload.single('cv'), authController.register);
 
 /**
  * @swagger

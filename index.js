@@ -8,6 +8,16 @@ const ordenCompraRoutes = require('./api/routes/ordenCompraRoutes');
 const providerRoutes = require('./api/routes/providerRoutes'); // Importa las nuevas rutas de proveedores
 const app = express();
 const cors = require('cors');
+
+const fs = require('fs');
+const path = require('path');
+
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
+
+
 app.use(cors({
     origin: 'http://localhost:3849', // Origen permitido
     optionsSuccessStatus: 200, // Algunos navegadores requieren esta opción

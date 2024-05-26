@@ -4,6 +4,27 @@ const User = require('../models/User');
 const ExcelJS = require('exceljs');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
+
+// carga de archivos
+const multer = require('multer');
+const path = require('path');
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
+
+
+
+
+
+
+
 exports.login = async (req, res) => {
   const { username, password } = req.body;
 
@@ -54,39 +75,87 @@ exports.login = async (req, res) => {
 };
 
 
+// exports.register = async (req, res) => {
+//     const { username, password,role,nombres,apellidos,tipoDocumento,numeroDocumento,telefono,sexo} = req.body;
+  
+//     try {
+//       let user = await User.findOne({ username });
+  
+//       if (user) {
+//         return res.status(400).json({ msg: 'User already exists' });
+//       }
+  
+//       user = new User({
+//         username,
+//         password,
+//         role,
+//         nombres,
+//         apellidos,
+//         tipoDocumento,
+//         numeroDocumento,
+//         telefono,
+//         sexo
+//       });
+  
+//       const salt = await bcrypt.genSalt(10);
+//       user.password = await bcrypt.hash(password, salt);
+  
+//       await user.save();
+  
+//       res.json({ msg: 'User registered successfully' });
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).send('Server Error');
+//     }
+//   };
+
+
+
+
 exports.register = async (req, res) => {
-    const { username, password,role,nombres,apellidos,tipoDocumento,numeroDocumento,telefono,sexo} = req.body;
-  
-    try {
-      let user = await User.findOne({ username });
-  
-      if (user) {
-        return res.status(400).json({ msg: 'User already exists' });
-      }
-  
-      user = new User({
-        username,
-        password,
-        role,
-        nombres,
-        apellidos,
-        tipoDocumento,
-        numeroDocumento,
-        telefono,
-        sexo
-      });
-  
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-  
-      await user.save();
-  
-      res.json({ msg: 'User registered successfully' });
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
+  const { username, password, role, nombres, apellidos, tipoDocumento, numeroDocumento, telefono, sexo } = req.body;
+  const cv = req.file ? req.file.path : null; // Obtener la ruta del archivo si se carga
+
+  try {
+    let user = await User.findOne({ username });
+
+    if (user) {
+      return res.status(400).json({ msg: 'User already exists' });
     }
-  };
+
+    user = new User({
+      username,
+      password,
+      role,
+      nombres,
+      apellidos,
+      tipoDocumento,
+      numeroDocumento,
+      telefono,
+      sexo,
+      cv, // Guardar la ruta del archivo
+    });
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+
+    await user.save();
+
+    res.json({ msg: 'User registered successfully' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+// Exportar multer upload para usarlo en las rutas
+exports.upload = upload;
+
+
+
+
+
+
 
   exports.getAllUsers = async (req, res) => {
     try {
