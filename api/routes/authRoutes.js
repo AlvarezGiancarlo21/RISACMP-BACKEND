@@ -2,9 +2,8 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 
-// carga de archivos
 const upload = authController.upload;
-
+const uploadS3 = authController.uploadS3;
 
 
 /**
@@ -77,7 +76,7 @@ router.post('/login', authController.login);
  *       500:
  *         description: Server error
  */
-router.post('/register', upload.single('cv'), authController.register);
+router.post('/register', authController.uploadS3.single('cv'), authController.register);
 
 /**
  * @swagger
