@@ -37,6 +37,10 @@ const orderSchema = new Schema({
   quantity: {
     type: quantitySchema,
     required: true
+  },
+  observation:{
+    type:String,
+    require:true
   }
 });
 

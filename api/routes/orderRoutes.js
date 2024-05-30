@@ -96,7 +96,7 @@ router.get('/orders/:id', orderController.getOrderById);
  * @swagger
  * /api/orders/{id}:
  *   put:
- *     summary: Update order by ID
+ *     summary: Update an order by ID
  *     tags: [Orders]
  *     parameters:
  *       - in: path
@@ -112,26 +112,37 @@ router.get('/orders/:id', orderController.getOrderById);
  *           schema:
  *             type: object
  *             properties:
+ *               customerName:
+ *                 type: string
+ *               orderDate:
+ *                 type: string
+ *                 format: date
+ *               orderStatus:
+ *                 type: string
  *               productCode:
  *                 type: string
  *               quantity:
  *                 type: object
  *                 properties:
- *                   units:
- *                     type: number
  *                   kilos:
+ *                     type: number
+ *                   units:
  *                     type: number
  *               observation:
  *                 type: string
  *     responses:
  *       200:
  *         description: Order updated successfully
+ *       400:
+ *         description: Bad request, check the request body
  *       404:
  *         description: Order not found
  *       500:
  *         description: Server error
  */
 router.put('/orders/:id', orderController.updateOrderById);
+
+
 
 /**
  * @swagger

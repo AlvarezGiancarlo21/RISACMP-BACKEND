@@ -2,9 +2,9 @@
 const Order = require('../models/Order');
 
 exports.createOrder = async (req, res) => {
-    const { orderCode, customerName, orderDate, orderStatus, productCode, quantity } = req.body;
+    const { orderCode, customerName, orderDate, orderStatus, productCode, quantity,observation } = req.body;
   
-    if (!orderCode || !customerName || !orderDate || !orderStatus || !productCode || !quantity || !quantity.kilos || !quantity.units) {
+    if (!orderCode || !customerName || !orderDate || !orderStatus || !productCode || !quantity || !quantity.kilos || !quantity.units|| !observation) {
       return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
   
@@ -22,7 +22,8 @@ exports.createOrder = async (req, res) => {
         orderDate,
         orderStatus,
         productCode,
-        quantity
+        quantity,
+        observation,
       });
   
       await newOrder.save();
@@ -56,25 +57,35 @@ exports.getOrderById = async (req, res) => {
 };
 
 exports.updateOrderById = async (req, res) => {
-  try {
-    const { productCode, quantity, observation } = req.body;
-    let order = await Order.findById(req.params.id);
+    const orderId = req.params.id;
+    const { customerName, orderDate, orderStatus, productCode, quantity, observation } = req.body;
+  
+    try {
+      let order = await Order.findById(orderId);
+  
+      if (!order) {
+        return res.status(404).json({ msg: 'Order not found' });
+      }
+  
+      // Actualizamos los campos de la orden solo si se proporcionan en la solicitud
+      if (customerName) order.customerName = customerName;
+      if (orderDate) order.orderDate = orderDate;
+      if (orderStatus) order.orderStatus = orderStatus;
+      if (productCode) order.productCode = productCode;
+      if (quantity) order.quantity = quantity;
+      if (observation) order.observation = observation;
 
-    if (!order) {
-      return res.status(404).json({ msg: 'Order not found' });
+  
+      await order.save();
+  
+      res.json({ msg: 'Order updated successfully' });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
     }
-
-    order.productCode = productCode || order.productCode;
-    order.quantity = quantity || order.quantity;
-    order.observation = observation || order.observation;
-
-    await order.save();
-    res.json(order);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-};
+  };
+  
+  
 
 exports.deleteOrderById = async (req, res) => {
   try {
