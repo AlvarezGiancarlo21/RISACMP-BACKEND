@@ -10,6 +10,13 @@ const providerRoutes = require('./api/routes/providerRoutes'); // Importa las nu
 const pedidosRoutes = require('./api/routes/pedidoRoutes'); // Importa las nuevas rutas de pedidos
 const planProduccionRoutes = require('./api/routes/planProduccionRoutes');
 
+const almacenProductoRoutes = require('./api/routes/almacenProductoRoutes')
+const almacenRoutes = require('./api/routes/almacenRoutes')
+const ordenTrabajoRoutes = require('./api/routes/ordenTrabajoRoutes')
+const origenRoutes = require('./api/routes/origenRoutes')
+const productoRoutes = require('./api/routes/productoRoutes')
+
+
 const app = express();
 const cors = require('cors');
 const fs = require('fs');
@@ -40,6 +47,11 @@ app.use('/api/provider', providerRoutes); // Agrega las rutas de proveedores
 app.use('/api/pedidos', pedidosRoutes); // Agrega las rutas de pedidos
 app.use('/api/receta', recetaRoutes); // Agrega las rutas de recetas
 app.use('/api/plan-produccion', planProduccionRoutes); // Agrega las rutas de plan de producción
+app.use('/api/almacen_producto', almacenProductoRoutes);
+app.use('/api/almacen', almacenRoutes);
+app.use('/api/orden_trabajo', ordenTrabajoRoutes);
+app.use('/api/origen', origenRoutes);
+app.use('/api/producto', productoRoutes);
 // Swagger Docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
