@@ -8,6 +8,7 @@ const recetaRoutes = require('./api/routes/recetaRoutes');
 
 const providerRoutes = require('./api/routes/providerRoutes'); // Importa las nuevas rutas de proveedores
 const orderRoutes = require('./api/routes/orderRoutes'); // Importa las nuevas rutas de pedidos
+const planProduccionRoutes = require('./api/routes/planProduccionRoutes');
 
 const app = express();
 const cors = require('cors');
@@ -37,8 +38,8 @@ app.use('/api/merma', mermaRoutes);
 app.use('/api/orden-compra', ordenCompraRoutes);
 app.use('/api/provider', providerRoutes); // Agrega las rutas de proveedores
 app.use('/api', orderRoutes); // Agrega las rutas de pedidos
-app.use('/api/receta', recetaRoutes);
-
+app.use('/api/receta', recetaRoutes); //APIS de recetas
+app.use('/api/plan-produccion', planProduccionRoutes)//APIS de plan de produccion
 // Swagger Docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
