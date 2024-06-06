@@ -37,7 +37,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/merma', mermaRoutes);
 app.use('/api/orden-compra', ordenCompraRoutes);
 app.use('/api/provider', providerRoutes); // Agrega las rutas de proveedores
-app.use('/api', orderRoutes); // Agrega las rutas de pedidos
+app.use('/api/pedidos', orderRoutes); // Agrega las rutas de pedidos
 app.use('/api/receta', recetaRoutes); //APIS de recetas
 app.use('/api/plan-produccion', planProduccionRoutes)//APIS de plan de produccion
 // Swagger Docs

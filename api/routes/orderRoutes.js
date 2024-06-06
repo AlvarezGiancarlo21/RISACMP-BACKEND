@@ -5,10 +5,10 @@ const orderController = require('../controllers/orderController');
 
 /**
  * @swagger
- * /api/orders:
+ * /api/pedidos/post:
  *   post:
  *     summary: Create a new order
- *     tags: [Orders]
+ *     tags: [Pedidos]
  *     requestBody:
  *       required: true
  *       content:
@@ -52,29 +52,29 @@ const orderController = require('../controllers/orderController');
  *       500:
  *         description: Server error
  */
-router.post('/orders', orderController.createOrder);
+router.post('/post', orderController.createOrder);
 
 
 /**
  * @swagger
- * /api/orders:
+ * /api/pedidos/get/all:
  *   get:
  *     summary: Get all orders
- *     tags: [Orders]
+ *     tags: [Pedidos]
  *     responses:
  *       200:
  *         description: Returns all orders
  *       500:
  *         description: Server error
  */
-router.get('/orders', orderController.getOrders);
+router.get('/get/all', orderController.getOrders);
 
 /**
  * @swagger
- * /api/orders/{id}:
+ * /api/pedidos/get/{id}:
  *   get:
  *     summary: Get order by ID
- *     tags: [Orders]
+ *     tags: [Pedidos]
  *     parameters:
  *       - in: path
  *         name: id
@@ -90,14 +90,14 @@ router.get('/orders', orderController.getOrders);
  *       500:
  *         description: Server error
  */
-router.get('/orders/:id', orderController.getOrderById);
+router.get('/get/:id', orderController.getOrderById);
 
 /**
  * @swagger
- * /api/orders/{id}:
+ * /api/pedidos/{id}:
  *   put:
  *     summary: Update an order by ID
- *     tags: [Orders]
+ *     tags: [Pedidos]
  *     parameters:
  *       - in: path
  *         name: id
@@ -140,16 +140,16 @@ router.get('/orders/:id', orderController.getOrderById);
  *       500:
  *         description: Server error
  */
-router.put('/orders/:id', orderController.updateOrderById);
+router.put('/:id', orderController.updateOrderById);
 
 
 
 /**
  * @swagger
- * /api/orders/{id}:
+ * /api/pedidos/{id}:
  *   delete:
  *     summary: Delete order by ID
- *     tags: [Orders]
+ *     tags: [Pedidos]
  *     parameters:
  *       - in: path
  *         name: id
@@ -165,6 +165,6 @@ router.put('/orders/:id', orderController.updateOrderById);
  *       500:
  *         description: Server error
  */
-router.delete('/orders/:id', orderController.deleteOrderById);
+router.delete('/:id', orderController.deleteOrderById);
 
 module.exports = router;
