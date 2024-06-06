@@ -159,43 +159,7 @@ exports.updatePedidoById = async (req, res) => {
   }
 };
 
-exports.availablePedidoById = async (req, res) => {
-  const { id } = req.params;
 
-  try {
-    let pedido = await Pedido.findById(id);
-
-    if (!pedido) {
-      return res.status(404).json({ msg: "Pedido not found" });
-    }
-
-    // Realizar la lógica para habilitar el pedido
-
-    res.json({ msg: "Pedido enabled successfully" });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-};
-
-exports.unavailablePedidoById = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    let pedido = await Pedido.findById(id);
-
-    if (!pedido) {
-      return res.status(404).json({ msg: "Pedido not found" });
-    }
-
-    // Realizar la lógica para deshabilitar el pedido
-
-    res.json({ msg: "Pedido disabled successfully" });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-};
 
 exports.getPedidoById = async (req, res) => {
   const { id } = req.params;

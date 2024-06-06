@@ -138,55 +138,6 @@ router.get('/export-pdf', pedidoController.exportPedidosToPDF);
  */
 router.put('/:id', pedidoController.updatePedidoById);
 
-
-
-
-/**
- * @swagger
- * /api/pedidos/{id}/available:
- *   patch:
- *     summary: Habilitar un pedido por ID
- *     tags: [Pedido]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID del pedido a habilitar
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Pedido habilitado exitosamente
- *       404:
- *         description: Pedido no encontrado
- *       500:
- *         description: Error del servidor
- */
-router.patch('/:id/available', pedidoController.availablePedidoById);
-
-/**
- * @swagger
- * /api/pedidos/{id}/unavailable:
- *   patch:
- *     summary: Deshabilitar un pedido por ID
- *     tags: [Pedido]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID del pedido a deshabilitar
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Pedido deshabilitado exitosamente
- *       404:
- *         description: Pedido no encontrado
- *       500:
- *         description: Error del servidor
- */
-router.patch('/:id/unavailable', pedidoController.unavailablePedidoById);
-
 /**
  * @swagger
  * /api/pedidos/{id}:
