@@ -39,7 +39,7 @@ const crearOrdenTrabajo = async (req, res) => {
         const nuevaOrdenTrabajo = {
             pedido,
             receta,
-            cantidad_a_realizar: req.body.cantidad_a_realizar,
+            cantidad_a_realizar: pedido.cantidad.kilos,
             cantidad_realizada: req.body.cantidad_realizada,
             unidad_medida_id: req.body.unidad_medida_id,
             estado: req.body.estado,

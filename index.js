@@ -16,6 +16,9 @@ const ordenTrabajoRoutes = require('./api/routes/ordenTrabajoRoutes')
 const origenRoutes = require('./api/routes/origenRoutes')
 const productoRoutes = require('./api/routes/productoRoutes')
 
+const requerimientosRoutes = require('./api/routes/requerimientosRoutes');
+const unidadMedidaRoutes = require('./api/routes/unidadMedidaRoutes');
+
 
 const app = express();
 const cors = require('cors');
@@ -52,6 +55,10 @@ app.use('/api/almacen', almacenRoutes);
 app.use('/api/orden_trabajo', ordenTrabajoRoutes);
 app.use('/api/origen', origenRoutes);
 app.use('/api/producto', productoRoutes);
+
+app.use('/api/unidad_medida', unidadMedidaRoutes);
+app.use('/api/requerimientos', requerimientosRoutes)
+
 // Swagger Docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 

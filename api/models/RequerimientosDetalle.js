@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const almacenproductosSchema = new mongoose.Schema(
+const requerimientosDetalleSchema = new mongoose.Schema(
     {
-        almacen_id: {
+        requerimiento_id: {
             type: String,
             required: true,
         },
@@ -18,18 +18,10 @@ const almacenproductosSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        estado: { // 1. Vendido 2. En almacén 3. Desechado
-            type: String,
-            required: true,
-        },
-        origen_id: {
-            type: String,
-            required: true,
-        },
     },
     {
         timestamps: true,
     }
 );
 
-module.exports = mongoose.model('AlmacenProducto', almacenproductosSchema);
+module.exports = mongoose.model('RequerimientosDetalle', requerimientosDetalleSchema);

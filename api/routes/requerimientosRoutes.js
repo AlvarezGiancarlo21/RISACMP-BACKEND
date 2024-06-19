@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const unidadMedidaController = require('../controllers/unidadMedidaController');
+const requerimientosController = require('../controllers/requerimientosController');
 
 /**
  * @swagger
- * /api/unidad_medida/get/all:
+ * /api/requerimientos/get/all:
  *   get:
- *     summary: Obtener todas las Unidades de Medida
- *     tags: [Unidad de Medida]
+ *     summary: Obtener todos los Requerimientos
+ *     tags: [Requerimientos]
  *     responses:
  *       200:
  *         description: Datos obtenidos satisfactoriamente
@@ -16,19 +16,19 @@ const unidadMedidaController = require('../controllers/unidadMedidaController');
  *       500:
  *         description: Server error
  */
-router.get('/get/all', unidadMedidaController.obtenerTodosLasUnidadesDeMedida);
+router.get('/get/all', requerimientosController.obtenerTodosLosRequerimientos);
 
 /**
  * @swagger
- * /api/unidad_medida/get/{id}:
+ * /api/requerimientos/get/{id}:
  *   get:
- *     summary: Obtener Unidad de Medida por su id
- *     tags: [Unidad de Medida]
+ *     summary: Obtener Requerimiento por su id
+ *     tags: [Requerimientos]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID de la Unidad de Medida a buscar
+ *         description: ID del Requerimiento a buscar
  *         schema:
  *           type: string
  *     responses:
@@ -39,14 +39,14 @@ router.get('/get/all', unidadMedidaController.obtenerTodosLasUnidadesDeMedida);
  *       500:
  *         description: Server error
  */
-router.get('/get/:id', unidadMedidaController.obtenerUnidadMedidaPorId);
+router.get('/get/:id', requerimientosController.obtenerRequerimientoPorId);
 
 /**
  * @swagger
- * /api/unidad_medida/post:
+ * /api/requerimientos/post:
  *   post:
- *     summary: Registrar una Unidad de Medida
- *     tags: [Unidad de Medida]
+ *     summary: Registrar un Requerimiento
+ *     tags: [Requerimientos]
  *     requestBody:
  *       required: true
  *       content:
@@ -54,10 +54,19 @@ router.get('/get/:id', unidadMedidaController.obtenerUnidadMedidaPorId);
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
+ *               orden_trabajo_id:
  *                 type: string
- *               simbolo:
- *                 type: string
+ *               productos:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     producto_id:
+ *                       type: string
+ *                     cantidad:
+ *                       type: number
+ *                     unidad_medida_id:
+ *                       type: string
  *     responses:
  *       200:
  *         description: Datos creados satisfactoriamente
@@ -66,30 +75,21 @@ router.get('/get/:id', unidadMedidaController.obtenerUnidadMedidaPorId);
  *       500:
  *         description: Server error
  */
-router.post('/post', unidadMedidaController.crearUnidadMedida);
+router.post('/post', requerimientosController.crearRequerimiento);
 
 /**
  * @swagger
- * /api/unidad_medida/put/{id}:
+ * /api/requerimientos/put/{id}:
  *   put:
- *     summary: Actualizar una Unidad de Medida
- *     tags: [Unidad de Medida]
+ *     summary: Actualizar el Estado de un Requerimiento, EN ESPERA => EN PROCESO => FINALIZADO
+ *     tags: [Requerimientos]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID de la Unidad de Medida a actualizar
+ *         description: ID del Requerimiento a actualizar
  *         schema:
  *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               nombre:
- *                 type: string
  *     responses:
  *       200:
  *         description: Datos actualizados satisfactoriamente
@@ -98,19 +98,19 @@ router.post('/post', unidadMedidaController.crearUnidadMedida);
  *       500:
  *         description: Server error
  */
-router.put('/put/:id', unidadMedidaController.actualizarUnidadMedida);
+router.put('/put/:id', requerimientosController.actualizarEstadoRequerimiento);
 
 /**
  * @swagger
- * /api/unidad_medida/delete/{id}:
+ * /api/requerimientos/delete/{id}:
  *   delete:
- *     summary: Eliminar una Unidad de Medida
- *     tags: [Unidad de Medida]
+ *     summary: Eliminar un Requerimiento
+ *     tags: [Requerimientos]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID de la Unidad de Medida a eliminar
+ *         description: ID del Requerimiento a eliminar
  *         schema:
  *           type: string
  *     responses:
@@ -121,6 +121,6 @@ router.put('/put/:id', unidadMedidaController.actualizarUnidadMedida);
  *       500:
  *         description: Server error
  */
-router.delete('/delete/:id', unidadMedidaController.eliminarUnidadMedida);
+router.delete('/delete/:id', requerimientosController.eliminarRequerimiento);
 
 module.exports = router;

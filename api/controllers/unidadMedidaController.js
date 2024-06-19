@@ -21,6 +21,14 @@ const obtenerUnidadMedidaPorId = async (req, res) => {
 
 const crearUnidadMedida = async (req, res) => {
     try {
+        let validacion = await UnidadMedida.findOne({nombre:req.body.nombre})
+        if (validacion) {
+            return res.status(400).json({ message: "Nombre de Unidad de Medida ya existente" });
+        }
+        validacion = await UnidadMedida.findOne({simbolo:req.body.simbolo})
+        if (validacion) {
+            return res.status(400).json({message: "Símbolo de Unidad de Medida ya existente"})
+        }
         const dato = await UnidadMedida.create(req.body);
         res.status(200).json(dato);
     } catch (error) {

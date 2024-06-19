@@ -110,7 +110,7 @@ router.get('/export-pdf', pedidoController.exportPedidosToPDF);
  *           schema:
  *             type: object
  *             properties:
- *               codigo:
+ *               codigoPedido:
  *                 type: string
  *               nombreCliente:
  *                 type: string
@@ -119,15 +119,17 @@ router.get('/export-pdf', pedidoController.exportPedidosToPDF);
  *                 format: date
  *               estadoPedido:
  *                 type: string
- *               codigoProducto:
- *                 type: string
- *               cantidad:
- *                 type: object
- *                 properties:
- *                   kilos:
- *                     type: number
- *                   unidades:
- *                     type: number
+ *               productos:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     producto_id:
+ *                       type: string
+ *                     cantidad:
+ *                       type: number
+ *                     unidad_medida_id:
+ *                       type: string
  *               observacion:
  *                 type: string
  *     responses:

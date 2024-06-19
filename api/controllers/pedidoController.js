@@ -146,7 +146,7 @@ exports.exportPedidosToPDF = async (req, res) => {
 
 exports.updatePedidoById = async (req, res) => {
   const { id } = req.params;
-  const { codigoPedido, nombreCliente, fechaPedido, estadoPedido, codigoProducto, cantidad, observacion } = req.body;
+  const { codigoPedido, nombreCliente, fechaPedido, estadoPedido, productos, observacion } = req.body;
 
   try {
     let pedido = await Pedido.findById(id);
@@ -155,12 +155,25 @@ exports.updatePedidoById = async (req, res) => {
       return res.status(404).json({ msg: "Pedido not found" });
     }
 
+    // Validar productos antes de actualizar
+    let validacion;
+    for (let producto of productos) {
+      validacion = await ProductoModel.findById(producto.producto_id);
+      if (!validacion) {
+        return res.status(400).json({ msg: `El producto de id ${producto.producto_id} no existe` });
+      }
+      validacion = await UnidadMedidaModel.findById(producto.unidad_medida_id);
+      if (!validacion) {
+        return res.status(400).json({ msg: `La unidad de medida del producto de id ${producto.producto_id} no existe` });
+      }
+    }
+
+    // Actualizar pedido con los nuevos datos
     pedido.codigoPedido = codigoPedido || pedido.codigoPedido;
     pedido.nombreCliente = nombreCliente || pedido.nombreCliente;
     pedido.fechaPedido = fechaPedido || pedido.fechaPedido;
     pedido.estadoPedido = estadoPedido || pedido.estadoPedido;
-    pedido.codigoProducto = codigoProducto || pedido.codigoProducto;
-    pedido.cantidad = cantidad || pedido.cantidad;
+    pedido.productos = productos || pedido.productos;
     pedido.observacion = observacion || pedido.observacion;
 
     await pedido.save();
