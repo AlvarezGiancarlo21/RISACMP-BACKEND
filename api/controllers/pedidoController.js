@@ -1,11 +1,10 @@
 // controllers/pedidoController.js
-
 const Pedido = require("../models/Pedido");
 const ExcelJS = require("exceljs");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const ProductoModel = require("../models/Producto");
-const UnidadMedidaModel = require("../models/UnidadMedidaModel")
+const UnidadMedidaModel = require("../models/UnidadMedidaModel");
 
 exports.registerPedido = async (req, res) => {
   const { nombreCliente, estadoPedido, observacion, productos } = req.body;
@@ -17,11 +16,14 @@ exports.registerPedido = async (req, res) => {
     let nextCodigoPedido = 1;
     if (lastPedido) {
       // Si hay pedidos previos, incrementar el código
-      nextCodigoPedido = lastPedido.codigoPedido + 1;
+      const lastNumero = parseInt(lastPedido.codigoPedido.split('-')[1]);
+      nextCodigoPedido = lastNumero + 1;
     }
 
+    const nuevoCodigoPedido = `PEDIDO-${nextCodigoPedido}`;
+
     const nuevoPedido = new Pedido({
-      codigoPedido: nextCodigoPedido,
+      codigoPedido: nuevoCodigoPedido,
       nombreCliente,
       estadoPedido,
       observacion,
@@ -30,7 +32,7 @@ exports.registerPedido = async (req, res) => {
 
     await nuevoPedido.save();
 
-    res.status(201).json({ codigoPedido: nextCodigoPedido, msg: "Pedido registrado exitosamente" });
+    res.status(201).json({ codigoPedido: nuevoCodigoPedido, msg: "Pedido registrado exitosamente" });
   } catch (error) {
     console.error("Error al registrar el pedido:", error);
     res.status(500).json({ error: "Error del servidor al registrar el pedido" });
@@ -39,7 +41,6 @@ exports.registerPedido = async (req, res) => {
 
 exports.getAllPedidos = async (req, res) => {
   try {
-
     const pedidos = await Pedido.find();
     res.json(pedidos);
   } catch (err) {
@@ -69,15 +70,15 @@ exports.exportPedidosToExcel = async (req, res) => {
 
     // Agregar los datos de los pedidos al worksheet
     pedidos.forEach(pedido => {
-        worksheetPedidos.addRow({
-            codigoPedido: pedido.codigoPedido,
-            nombreCliente: pedido.nombreCliente,
-            fechaPedido: pedido.fechaPedido,
-            estadoPedido: pedido.estadoPedido,
-            codigoProducto: pedido.codigoProducto,
-            cantidad: pedido.cantidad,
-            observacion: pedido.observacion
-        });
+      worksheetPedidos.addRow({
+        codigoPedido: pedido.codigoPedido,
+        nombreCliente: pedido.nombreCliente,
+        fechaPedido: pedido.fechaPedido,
+        estadoPedido: pedido.estadoPedido,
+        codigoProducto: pedido.productos.map(prod => prod.producto_id).join(", "),
+        cantidad: pedido.productos.length, // Ajustar según la estructura real de productos
+        observacion: pedido.observacion,
+      });
     });
 
     // Generar el archivo Excel
@@ -121,8 +122,8 @@ exports.exportPedidosToPDF = async (req, res) => {
       doc.font('Helvetica').fontSize(12).text(`Nombre Cliente: ${pedido.nombreCliente}`);
       doc.font('Helvetica').fontSize(12).text(`Fecha Pedido: ${pedido.fechaPedido}`);
       doc.font('Helvetica').fontSize(12).text(`Estado Pedido: ${pedido.estadoPedido}`);
-      doc.font('Helvetica').fontSize(12).text(`Código Producto: ${pedido.codigoProducto}`);
-      doc.font('Helvetica').fontSize(12).text(`Cantidad: ${pedido.cantidad}`);
+      doc.font('Helvetica').fontSize(12).text(`Código Producto: ${pedido.productos.map(prod => prod.producto_id).join(", ")}`);
+      doc.font('Helvetica').fontSize(12).text(`Cantidad: ${pedido.productos.length}`); // Ajustar según la estructura real de productos
       doc.font('Helvetica').fontSize(12).text(`Observación: ${pedido.observacion}`);
       doc.moveDown();
     });
@@ -175,8 +176,6 @@ exports.updatePedidoById = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
-
-
 
 exports.getPedidoById = async (req, res) => {
   const { id } = req.params;

@@ -23,7 +23,7 @@ const pedidoSchema = new mongoose.Schema({
     producto_id: String,
     cantidad: Number,
     unidad_medida_id: String,
-}],
+  }],
   observacion: String,
 });
 
