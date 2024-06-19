@@ -19,14 +19,11 @@ const pedidoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  codigoProducto: {
-    type: String,
-    required: true,
-  },
-  cantidad: {
-    kilos: Number,
-    unidades: Number,
-  },
+  productos: [{
+    producto_id: String,
+    cantidad: Number,
+    unidad_medida_id: String,
+}],
   observacion: String,
 });
 

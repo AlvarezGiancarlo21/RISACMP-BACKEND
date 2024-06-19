@@ -4,15 +4,28 @@ const Pedido = require("../models/Pedido");
 const ExcelJS = require("exceljs");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
+const ProductoModel = require("../models/Producto");
+const UnidadMedidaModel = require("../models/UnidadMedidaModel")
 
 exports.registerPedido = async (req, res) => {
-  const { codigoPedido, nombreCliente, fechaPedido, estadoPedido, codigoProducto, cantidad, observacion } = req.body;
-
+  const { codigoPedido, nombreCliente, fechaPedido, estadoPedido, observacion } = req.body;
+  const productos = req.body.productos;
   try {
     let pedido = await Pedido.findOne({ codigoPedido });
 
     if (pedido) {
       return res.status(400).json({ msg: "Pedido already exists" });
+    }
+    let validacion;
+    for (let producto of req.body.productos) {
+      validacion = await ProductoModel.findById(producto.producto_id);
+      if (!validacion) {
+        return res.status(400).json({msg:`El producto de id ${producto.producto_id} no existe`});
+      }
+      validacion = await UnidadMedidaModel.findById(producto.unidad_medida_id);
+      if (!validacion) {
+        return res.status(400).json({msg:`La unidad de medida del producto de id ${producto.producto_id} no existe`});
+      }
     }
 
     pedido = new Pedido({
@@ -20,8 +33,7 @@ exports.registerPedido = async (req, res) => {
       nombreCliente,
       fechaPedido,
       estadoPedido,
-      codigoProducto,
-      cantidad,
+      productos,
       observacion,
     });
 
@@ -36,6 +48,7 @@ exports.registerPedido = async (req, res) => {
 
 exports.getAllPedidos = async (req, res) => {
   try {
+
     const pedidos = await Pedido.find();
     res.json(pedidos);
   } catch (err) {
