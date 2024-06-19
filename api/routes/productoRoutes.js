@@ -4,49 +4,10 @@ const productoController = require('../controllers/productoController');
 
 /**
  * @swagger
- * /api/producto/get/all:
- *   get:
- *     summary: Obtener todos los Productos
- *     tags: [Producto]
- *     responses:
- *       200:
- *         description: Datos obtenidos satisfactoriamente
- *       400:
- *         description: Error
- *       500:
- *         description: Server error
- */
-router.get('/get/all', productoController.obtenerTodosLosProductos);
-
-/**
- * @swagger
- * /api/producto/get/{id}:
- *   get:
- *     summary: Obtener Producto por su id
- *     tags: [Producto]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID del Producto a buscar
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Datos obtenidos satisfactoriamente
- *       400:
- *         description: Error
- *       500:
- *         description: Server error
- */
-router.get('/get/:id', productoController.obtenerProductoPorId);
-
-/**
- * @swagger
- * /api/producto/post:
+ * /api/producto/register:
  *   post:
- *     summary: Registrar un Producto
- *     tags: [Producto]
+ *     summary: Register a new product
+ *     tags: [Product]
  *     requestBody:
  *       required: true
  *       content:
@@ -54,31 +15,64 @@ router.get('/get/:id', productoController.obtenerProductoPorId);
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
+ *               codigo:
+ *                  type: string
+ *               familia:
  *                 type: string
- *               tipo:
+ *               subFamilia:
  *                 type: string
+ *               proveedor:
+ *                 type: string
+ *               nombreProducto:
+ *                 type: string
+ *               fechaRegistro:
+ *                 type: string
+ *                 format: date
+ *               stockActual:
+ *                 type: number
+ *               cantSolicitada:
+ *                 type: number
+ *               stockResul:
+ *                 type: string
+ *               unidMedida:
+ *                 type: string
+ *               almacen:
+ *                 type: number
  *     responses:
  *       200:
- *         description: Datos creados satisfactoriamente
+ *         description: Product registered successfully
  *       400:
- *         description: Error
+ *         description: Product already exists
  *       500:
  *         description: Server error
  */
-router.post('/post', productoController.crearProducto);
+router.post('/register', productoController.registerProducto);
 
 /**
  * @swagger
- * /api/producto/put/{id}:
+ * /api/producto:
+ *   get:
+ *     summary: Obtain all products
+ *     tags: [Product]
+ *     responses:
+ *       200:
+ *         description: Returns all products
+ *       500:
+ *         description: Server error
+ */
+router.get('/', productoController.getAllProducts);
+
+/**
+ * @swagger
+ * /api/product/{id}:
  *   put:
- *     summary: Actualizar un Producto
- *     tags: [Producto]
+ *     summary: Actualizar un producto por ID
+ *     tags: [Product]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID del Producto a actualizar
+ *         description: ID del producto para actualizar
  *         schema:
  *           type: string
  *     requestBody:
@@ -88,41 +82,83 @@ router.post('/post', productoController.crearProducto);
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
+ *               codigo:
  *                 type: string
- *               tipo:
+ *               familia:
  *                 type: string
+ *               subFamilia:
+ *                 type: string
+ *               proveedor:
+ *                 type: string
+ *               nombreProducto:
+ *                 type: string
+ *               fechaRegistro:
+ *                 type: string
+ *                 format: date
+ *               stockActual:
+ *                 type: number
+ *               cantSolicitada:
+ *                 type: number
+ *               stockResul:
+ *                 type: string
+ *               unidMedida:
+ *                 type: string
+ *               almacen:
+ *                 type: number
  *     responses:
  *       200:
- *         description: Datos actualizados satisfactoriamente
- *       400:
- *         description: Error
+ *         description: Product updated successfully
+ *       404:
+ *         description: Product not found
  *       500:
  *         description: Server error
  */
-router.put('/put/:id', productoController.actualizarProducto);
+router.put('/:id', productoController.updateProductsById);
 
 /**
  * @swagger
- * /api/producto/delete/{id}:
+ * /api/product/{id}:
  *   delete:
- *     summary: Eliminar un Producto
- *     tags: [Producto]
+ *     summary: Deshabilitar un producto por ID
+ *     tags: [Product]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID del Producto a eliminar
+ *         description: ID del producto a deshabilitar
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Datos eliminados satisfactoriamente
- *       400:
- *         description: Error
+ *         description: Product successfully disabled
+ *       404:
+ *         description: Product not found
  *       500:
  *         description: Server error
  */
-router.delete('/delete/:id', productoController.eliminarProducto);
+router.delete('/:id', productoController.deleteProductoById);
+
+/**
+ * @swagger
+ * /api/product/{id}:
+ *   get:
+ *     summary: Obtener un producto por ID
+ *     tags: [Product]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del producto a obtener
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Retornar el producto solicitado
+ *       404:
+ *         description: Producto no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+router.get('/:id', productoController.getProductoById);
 
 module.exports = router;
