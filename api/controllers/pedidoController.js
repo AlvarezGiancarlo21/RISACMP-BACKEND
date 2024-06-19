@@ -8,41 +8,32 @@ const ProductoModel = require("../models/Producto");
 const UnidadMedidaModel = require("../models/UnidadMedidaModel")
 
 exports.registerPedido = async (req, res) => {
-  const { codigoPedido, nombreCliente, fechaPedido, estadoPedido, observacion } = req.body;
-  const productos = req.body.productos;
+  const { nombreCliente, estadoPedido, observacion, productos } = req.body;
+
   try {
-    let pedido = await Pedido.findOne({ codigoPedido });
+    // Obtener el último código de pedido registrado
+    const lastPedido = await Pedido.findOne().sort({ codigoPedido: -1 });
 
-    if (pedido) {
-      return res.status(400).json({ msg: "Pedido already exists" });
-    }
-    let validacion;
-    for (let producto of req.body.productos) {
-      validacion = await ProductoModel.findById(producto.producto_id);
-      if (!validacion) {
-        return res.status(400).json({msg:`El producto de id ${producto.producto_id} no existe`});
-      }
-      validacion = await UnidadMedidaModel.findById(producto.unidad_medida_id);
-      if (!validacion) {
-        return res.status(400).json({msg:`La unidad de medida del producto de id ${producto.producto_id} no existe`});
-      }
+    let nextCodigoPedido = 1;
+    if (lastPedido) {
+      // Si hay pedidos previos, incrementar el código
+      nextCodigoPedido = lastPedido.codigoPedido + 1;
     }
 
-    pedido = new Pedido({
-      codigoPedido,
+    const nuevoPedido = new Pedido({
+      codigoPedido: nextCodigoPedido,
       nombreCliente,
-      fechaPedido,
       estadoPedido,
-      productos,
       observacion,
+      productos,
     });
 
-    await pedido.save();
+    await nuevoPedido.save();
 
-    res.json({ msg: "Pedido registered successfully" });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(201).json({ codigoPedido: nextCodigoPedido, msg: "Pedido registrado exitosamente" });
+  } catch (error) {
+    console.error("Error al registrar el pedido:", error);
+    res.status(500).json({ error: "Error del servidor al registrar el pedido" });
   }
 };
 
