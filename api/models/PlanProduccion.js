@@ -2,22 +2,30 @@ const mongoose = require('mongoose');
 
 const planProduccionSchema = new mongoose.Schema(
     {
-        title:{
+        ordenTrabajo:{
             type: String,
             required: true,
         },
-        start: {
-            type: Date,
+        dias: {
+            type: [Number],
             required: true,
         },
-        end: {
-            type: Date,
-            required: true,
-        },
-        color :{
+        color: {
             type: String,
             required: true,
         },
+        fechaInicio :{
+            type: Date,
+            required: true,
+        },
+        fechaFin :{
+            type: Date,
+            required: true,
+        },
+        estado :{
+            type: String,
+            required: true
+        }
     },
     {
         timestamps: true,
