@@ -54,15 +54,21 @@ router.get('/get/:id', planProduccionController.getByIDPlanProduccion);
  *           schema:
  *             type: object
  *             properties:
- *               title:
+ *               ordenTrabajo:
  *                 type: string
- *               start:
- *                 type: string
- *                 format: date
- *               end:
- *                 type: string
- *                 format: date
+ *               dias:
+ *                 type: array
+ *                 items:
+ *                   type: number
  *               color:
+ *                 type: string
+ *               fechaInicio:
+ *                 type: string
+ *                 format: date
+ *               fechaFin:
+ *                 type: string
+ *                 format: date
+ *               estado:
  *                 type: string
  *     responses:
  *       200:
@@ -94,15 +100,21 @@ router.post('/post', planProduccionController.postPlanProduccion);
  *           schema:
  *             type: object
  *             properties:
- *               title:
+ *               ordenTrabajo:
  *                 type: string
- *               start:
- *                 type: string
- *                 format: date
- *               end:
- *                 type: string
- *                 format: date
+ *               dias:
+ *                 type: array
+ *                 items:
+ *                   type: number
  *               color:
+ *                 type: string
+ *               fechaInicio:
+ *                 type: string
+ *                 format: date
+ *               fechaFin:
+ *                 type: string
+ *                 format: date
+ *               estado:
  *                 type: string
  *     responses:
  *       200:
@@ -113,5 +125,29 @@ router.post('/post', planProduccionController.postPlanProduccion);
  *         description: Error del servidor
  */
 router.put('/:id', planProduccionController.updatePlanProduccionByID);
+
+
+/**
+ * @swagger
+ * /api/plan-produccion/delete/{id}:
+ *   delete:
+ *     summary: Eliminar un Plan
+ *     tags: [PlanProduccion]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del Plan a eliminar
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Datos eliminados satisfactoriamente
+ *       400:
+ *         description: Error
+ *       500:
+ *         description: Server error
+ */
+router.delete('/delete/:id', planProduccionController.eliminarPlan);
 
 module.exports = router;
