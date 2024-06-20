@@ -34,17 +34,19 @@ exports.postPlanProduccion = async (req,res) => {
 //Editar plan de produccion
 exports.updatePlanProduccionByID = async (req, res) => {
     const { id } = req.params;
-    const { title, start, end, color } = req.body;
+    const { ordenTrabajo, dias, color, fechaInicio, fechaFin, estado} = req.body;
 
     try {
         let plan = await PlanProduccion.findById(id);
 
         if (!plan) return res.status(404).json({ msg: 'Plan de produccion no encontrado' });
 
-        plan.title = title || plan.title;
-        plan.start = start || plan.start;
-        plan.end = end || plan.end;
+        plan.ordenTrabajo = ordenTrabajo || plan.ordenTrabajo;
+        plan.dias = dias || plan.dias;
         plan.color = color || plan.color;
+        plan.fechaInicio = fechaInicio || plan.fechaInicio;
+        plan.fechaFin = fechaFin || plan.fechaFin;
+        plan.estado = estado || plan.estado;
 
         await plan.save();
 
@@ -52,5 +54,18 @@ exports.updatePlanProduccionByID = async (req, res) => {
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Error del servidor');
+    }
+}
+
+exports.eliminarPlan = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const orden = await PlanProduccion.findByIdAndDelete(id);
+        if (!orden) {
+            return res.status(404).json({ message: "Plan no encontrado" });
+        }
+        res.status(200).json({ message: "Plan eliminado exitosamente" });
+    } catch (error) {
+        res.status(500).json({ message: error.message })
     }
 }
