@@ -26,6 +26,29 @@ const ordenCompraSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        productos: [{
+            nombre: {
+                type: String,
+                required: true
+              },
+              cantidad: {
+                type: Number,
+                required: true
+              },
+              unidad: {
+                type: String,
+                enum: ['kg', 'g', 'l', 'ml'],
+                required: true
+              },
+              precio_unidad:{
+                type: Number,
+                required: true
+              },
+              total: {
+                type: Number,
+                required: true
+              }
+          }],
         estado:{
             type: String,
             required: true,

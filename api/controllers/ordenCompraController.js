@@ -67,12 +67,19 @@ exports.obtenerOrdenCompraPorId = async (req, res) => {
 
 //Registrar orden de compra
 exports.crearOrdenCompra = async (req, res) => {
-    const { nro, nombre, user, fecha_subida, proveedor, estado } = req.body;
+    const { nro, nombre, user, fecha_subida, proveedor, productos, estado } = req.body;
     const archivo = req.file ? req.file.path : null; // Obtener la ruta del archivo si se carga
     try {
         let orden = await OrdenCompra.findOne({ nombre });
         if (orden) {
             return res.status(400).json({ msg: 'La orden ya existe' });
+        }
+
+        let productosParsed;
+        try {
+            productosParsed = typeof productos === 'string' ? JSON.parse(productos) : productos;
+        } catch (error) {
+            return res.status(400).json({ msg: 'El formato de productos no es válido' });
         }
 
         orden = new OrdenCompra({
@@ -82,6 +89,7 @@ exports.crearOrdenCompra = async (req, res) => {
             user,
             fecha_subida,
             proveedor,
+            productos : productosParsed,
             estado
         })
         if (req.file) {
@@ -101,7 +109,7 @@ exports.crearOrdenCompra = async (req, res) => {
 //Editar orden de compra
 exports.editarOrdenCompraPorId = async (req, res) => {
     const { id } = req.params;
-    const { nro, nombre, archivo, user, fecha_subida, proveedor, estado } = req.body;
+    const { nro, nombre, archivo, user, fecha_subida, proveedor, productos, estado } = req.body;
 
     try {
         let orden = await OrdenCompra.findById(id);
@@ -114,6 +122,7 @@ exports.editarOrdenCompraPorId = async (req, res) => {
         orden.user = user || orden.user;
         orden.fecha_subida = fecha_subida || orden.fecha_subida;
         orden.proveedor = proveedor || orden.proveedor;
+        orden.productos = productos || orden.productos;
         orden.estado = estado || orden.estado;
 
         await orden.save();

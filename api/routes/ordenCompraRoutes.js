@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const ordenCompraController = require('../controllers/ordenCompraController');
+const ordenCompraController = require("../controllers/ordenCompraController");
 
 const upload = ordenCompraController.upload;
 const uploadS3 = ordenCompraController.uploadS3;
@@ -19,7 +19,7 @@ const uploadS3 = ordenCompraController.uploadS3;
  *       500:
  *         description: Server error
  */
-router.get('/get/all', ordenCompraController.obtenerTodosLasOrdenesDeCompra);
+router.get("/get/all", ordenCompraController.obtenerTodosLasOrdenesDeCompra);
 
 /**
  * @swagger
@@ -42,7 +42,7 @@ router.get('/get/all', ordenCompraController.obtenerTodosLasOrdenesDeCompra);
  *       500:
  *         description: Server error
  */
-router.get('/get/:id', ordenCompraController.obtenerOrdenCompraPorId);
+router.get("/get/:id", ordenCompraController.obtenerOrdenCompraPorId);
 
 /**
  * @swagger
@@ -64,13 +64,29 @@ router.get('/get/:id', ordenCompraController.obtenerOrdenCompraPorId);
  *                 archivo:
  *                   type: string
  *                   format: binary
- *                 user: 
+ *                 user:
  *                   type: string
  *                 fecha_subida:
  *                   type: string
  *                   format: date
  *                 proveedor:
  *                   type: string
+ *                 productos:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                      nombre:
+ *                        type: string
+ *                      cantidad:
+ *                        type: number
+ *                      unidad:
+ *                        type: string
+ *                        enum: [kg, g, l, ml]
+ *                      precio_unidad:
+ *                        type: number
+ *                      total:
+ *                        type: number
  *                 estado:
  *                   type: string
  *     responses:
@@ -82,7 +98,11 @@ router.get('/get/:id', ordenCompraController.obtenerOrdenCompraPorId);
  *         description: Server error
  */
 
-router.post('/post',ordenCompraController.uploadS3.single('archivo'), ordenCompraController.crearOrdenCompra);
+router.post(
+  "/post",
+  ordenCompraController.uploadS3.single("archivo"),
+  ordenCompraController.crearOrdenCompra
+);
 
 /**
  * @swagger
@@ -116,7 +136,23 @@ router.post('/post',ordenCompraController.uploadS3.single('archivo'), ordenCompr
  *                 type: string
  *               proveedor:
  *                 type: string
- *               estado: 
+ *               productos:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                      nombre:
+ *                       type: string
+ *                      cantidad:
+ *                       type: number
+ *                      unidad:
+ *                       type: string
+ *                       enum: [kg, g, l, ml]
+ *                      precio_unidad:
+ *                          type: number
+ *                      total:
+ *                          type: number
+ *               estado:
  *                 type: string
  *     responses:
  *       200:
@@ -126,6 +162,6 @@ router.post('/post',ordenCompraController.uploadS3.single('archivo'), ordenCompr
  *       500:
  *         description: Error del servidor
  */
-router.put('/:id', ordenCompraController.editarOrdenCompraPorId);
+router.put("/:id", ordenCompraController.editarOrdenCompraPorId);
 
 module.exports = router;
