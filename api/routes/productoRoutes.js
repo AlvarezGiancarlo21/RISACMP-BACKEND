@@ -4,75 +4,83 @@ const productoController = require('../controllers/productoController');
 
 /**
  * @swagger
- * /api/producto/register:
- *   post:
- *     summary: Register a new product
- *     tags: [Product]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               codigo:
- *                  type: string
- *               familia:
- *                 type: string
- *               subFamilia:
- *                 type: string
- *               proveedor:
- *                 type: string
- *               nombreProducto:
- *                 type: string
- *               fechaRegistro:
- *                 type: string
- *                 format: date
- *               stockActual:
- *                 type: number
- *               cantSolicitada:
- *                 type: number
- *               stockResul:
- *                 type: string
- *               unidMedida:
- *                 type: string
- *               almacen:
- *                 type: number
+ * /api/producto/get/all:
+ *   get:
+ *     summary: Obtener todos los Productos
+ *     tags: [Producto]
  *     responses:
  *       200:
- *         description: Product registered successfully
+ *         description: Datos obtenidos satisfactoriamente
  *       400:
- *         description: Product already exists
+ *         description: Error
  *       500:
  *         description: Server error
  */
-router.post('/register', productoController.registerProducto);
+router.get('/get/all', productoController.obtenerTodosLosProductos);
 
 /**
  * @swagger
- * /api/producto:
+ * /api/producto/get/{id}:
  *   get:
- *     summary: Obtain all products
- *     tags: [Product]
- *     responses:
- *       200:
- *         description: Returns all products
- *       500:
- *         description: Server error
- */
-router.get('/', productoController.getAllProducts);
-
-/**
- * @swagger
- * /api/product/{id}:
- *   put:
- *     summary: Actualizar un producto por ID
- *     tags: [Product]
+ *     summary: Obtener Producto por su id
+ *     tags: [Producto]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID del producto para actualizar
+ *         description: ID del Producto a buscar
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Datos obtenidos satisfactoriamente
+ *       400:
+ *         description: Error
+ *       500:
+ *         description: Server error
+ */
+router.get('/get/:id', productoController.obtenerProductoPorId);
+
+/**
+ * @swagger
+ * /api/producto/post:
+ *   post:
+ *     summary: Registrar un Producto
+ *     tags: [Producto]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *               tipo:
+ *                 type: string
+ *               unidad_medida_id:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Datos creados satisfactoriamente
+ *       400:
+ *         description: Error
+ *       500:
+ *         description: Server error
+ */
+router.post('/post', productoController.crearProducto);
+
+/**
+ * @swagger
+ * /api/producto/put/{id}:
+ *   put:
+ *     summary: Actualizar un Producto
+ *     tags: [Producto]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del Producto a actualizar
  *         schema:
  *           type: string
  *     requestBody:
@@ -82,83 +90,41 @@ router.get('/', productoController.getAllProducts);
  *           schema:
  *             type: object
  *             properties:
- *               codigo:
+ *               nombre:
  *                 type: string
- *               familia:
+ *               tipo:
  *                 type: string
- *               subFamilia:
- *                 type: string
- *               proveedor:
- *                 type: string
- *               nombreProducto:
- *                 type: string
- *               fechaRegistro:
- *                 type: string
- *                 format: date
- *               stockActual:
- *                 type: number
- *               cantSolicitada:
- *                 type: number
- *               stockResul:
- *                 type: string
- *               unidMedida:
- *                 type: string
- *               almacen:
- *                 type: number
  *     responses:
  *       200:
- *         description: Product updated successfully
- *       404:
- *         description: Product not found
+ *         description: Datos actualizados satisfactoriamente
+ *       400:
+ *         description: Error
  *       500:
  *         description: Server error
  */
-router.put('/:id', productoController.updateProductsById);
+router.put('/put/:id', productoController.actualizarProducto);
 
 /**
  * @swagger
- * /api/product/{id}:
+ * /api/producto/delete/{id}:
  *   delete:
- *     summary: Deshabilitar un producto por ID
- *     tags: [Product]
+ *     summary: Eliminar un Producto
+ *     tags: [Producto]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID del producto a deshabilitar
+ *         description: ID del Producto a eliminar
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Product successfully disabled
- *       404:
- *         description: Product not found
+ *         description: Datos eliminados satisfactoriamente
+ *       400:
+ *         description: Error
  *       500:
  *         description: Server error
  */
-router.delete('/:id', productoController.deleteProductoById);
-
-/**
- * @swagger
- * /api/product/{id}:
- *   get:
- *     summary: Obtener un producto por ID
- *     tags: [Product]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID del producto a obtener
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Retornar el producto solicitado
- *       404:
- *         description: Producto no encontrado
- *       500:
- *         description: Error del servidor
- */
-router.get('/:id', productoController.getProductoById);
+router.delete('/delete/:id', productoController.eliminarProducto);
 
 module.exports = router;
