@@ -20,7 +20,8 @@ const requerimientosRoutes = require('./api/routes/requerimientosRoutes');
 const unidadMedidaRoutes = require('./api/routes/unidadMedidaRoutes');
 const productoDetalleRoutes = require('./api/routes/productoDetalleRoutes');
 const clientesRoutes = require('./api/routes/clientesRoutes'); // Importa las nuevas rutas de clientes
-
+const facturaRoutes = require('./api/routes/facturaRoutes')
+const notaCreditoRoutes = require('./api/routes/notaCreditoRoutes');
 
 
 const app = express();
@@ -64,6 +65,8 @@ app.use('/api/requerimientos', requerimientosRoutes)
 
 app.use('/api/producto_detalle', productoDetalleRoutes);
 app.use('/api/clientes', clientesRoutes); // Agrega las rutas de pedidos
+app.use('/api/factura', facturaRoutes);
+app.use('/api/nota-credito', notaCreditoRoutes);
 // Swagger Docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
