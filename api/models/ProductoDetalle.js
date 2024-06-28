@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-const unidadMedidaSchema = new mongoose.Schema(
+const productoDetalleSchema = new mongoose.Schema(
     {
-        nombre: {
+        producto_id: {
             type: String,
             required: true,
         },
-        simbolo: {
-            type: String,
+        cantidad_total: {
+            type: Number,
             required: true,
         },
     },
@@ -16,4 +16,4 @@ const unidadMedidaSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model('UnidadMedida', unidadMedidaSchema);
+module.exports = mongoose.model('ProductoDetalle', productoDetalleSchema);

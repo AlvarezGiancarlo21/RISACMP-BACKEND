@@ -43,29 +43,17 @@ router.get('/get/:id', ordenTrabajoController.obtenerOrdenTrabajoPorId);
 
 /**
  * @swagger
- * /api/orden_trabajo/post:
+ * /api/orden_trabajo/post/{pedido_id}:
  *   post:
- *     summary: Registrar una Orden de Trabajo
+ *     summary: Registrar Ordenes de Trabajo a partir de Pedido
  *     tags: [OrdenTrabajo]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               pedido_id:
- *                 type: string
- *               producto_id:
- *                 type: string
- *               cantidad_a_realizar:
- *                 type: number
- *               cantidad_realizada:
- *                 type: number
- *               unidad_medida_id:
- *                 type: string
- *               estado:
- *                 type: string
+ *     parameters:
+ *       - in: path
+ *         name: pedido_id
+ *         required: true
+ *         description: ID del Pedido a transformar en Ordenes de Trabajo
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Datos creados satisfactoriamente
@@ -74,13 +62,13 @@ router.get('/get/:id', ordenTrabajoController.obtenerOrdenTrabajoPorId);
  *       500:
  *         description: Server error
  */
-router.post('/post', ordenTrabajoController.crearOrdenTrabajo);
+router.post('/post/:pedido_id', ordenTrabajoController.crearOrdenTrabajoAPartirDePedido);
 
 /**
  * @swagger
- * /api/orden_trabajo/put/{id}:
+ * /api/orden_trabajo/put/{id}/cantidad_realizada:
  *   put:
- *     summary: Actualizar una Orden de Trabajo
+ *     summary: Actualizar la cantidad realizada en una Orden de Trabajo
  *     tags: [OrdenTrabajo]
  *     parameters:
  *       - in: path
@@ -96,18 +84,8 @@ router.post('/post', ordenTrabajoController.crearOrdenTrabajo);
  *           schema:
  *             type: object
  *             properties:
- *               pedido_id:
- *                 type: string
- *               producto_id:
- *                 type: string
- *               cantidad_a_realizar:
- *                 type: number
  *               cantidad_realizada:
  *                 type: number
- *               unidad_medida_id:
- *                 type: string
- *               estado:
- *                 type: string
  *     responses:
  *       200:
  *         description: Datos actualizados satisfactoriamente
@@ -116,7 +94,30 @@ router.post('/post', ordenTrabajoController.crearOrdenTrabajo);
  *       500:
  *         description: Server error
  */
-router.put('/put/:id', ordenTrabajoController.actualizarOrdenTrabajo);
+router.put('/put/:id/cantidad_realizada', ordenTrabajoController.actualizarOrdenTrabajo);
+
+/**
+ * @swagger
+ * /api/orden_trabajo/put/{id}/aceptar_orden:
+ *   put:
+ *     summary: Aceptar una Orden de Trabajo
+ *     tags: [OrdenTrabajo]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la Orden de Trabajo a aceptar
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Datos actualizados satisfactoriamente
+ *       400:
+ *         description: Error
+ *       500:
+ *         description: Server error
+ */
+router.put('/put/:id/aceptar_orden', ordenTrabajoController.actualizarEstadoOrdenTrabajo);
 
 /**
  * @swagger

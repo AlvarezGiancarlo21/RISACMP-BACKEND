@@ -4,7 +4,22 @@ const UnidadMedidaModel = require('../models/UnidadMedidaModel');
 const obtenerTodosLosProductos = async (req, res) => {
     try {
         const productos = await ProductoModel.find({});
-        res.status(200).json(productos);
+
+        let datos = [{}], i=0;
+        for (let producto of productos) {
+            const unidad_medida = await UnidadMedidaModel.findById(producto.unidad_medida_id);
+            datos[i] = {
+                id: producto.id,
+                nombre: producto.nombre,
+                tipo: producto.tipo,
+                unidad_medida: {
+                    nombre: unidad_medida.nombre,
+                    simbolo: unidad_medida.simbolo,
+                },
+            }
+            i++;
+        }
+        res.status(200).json(datos);
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
@@ -26,7 +41,6 @@ const obtenerProductoPorId = async (req, res) => {
 const crearProducto = async (req, res) => {
     try {
         let validacion = await ProductoModel.findOne({nombre:req.body.nombre})
-        console.log(req.body);
         if (validacion) {
             return res.status(400).json({ message: "Producto ya existente" });
         }
@@ -37,7 +51,12 @@ const crearProducto = async (req, res) => {
         if (!validacion) {
             return res.status(400).json({ message: "Unidad de Medida no encontrada" });
         }
-        const producto = await ProductoModel.create(req.body);
+        datos = {
+            nombre: req.body.nombre,
+            tipo: req.body.tipo,
+            unidad_medida_id: req.body.unidad_medida_id,
+        }
+        const producto = await ProductoModel.create(datos);
         res.status(200).json(producto);
     } catch (error) {
         res.status(500).json({ message: error.message })

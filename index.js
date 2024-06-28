@@ -18,6 +18,9 @@ const productoRoutes = require('./api/routes/productoRoutes')
 
 const requerimientosRoutes = require('./api/routes/requerimientosRoutes');
 const unidadMedidaRoutes = require('./api/routes/unidadMedidaRoutes');
+const productoDetalleRoutes = require('./api/routes/productoDetalleRoutes');
+const clientesRoutes = require('./api/routes/clientesRoutes'); // Importa las nuevas rutas de clientes
+
 
 
 const app = express();
@@ -59,6 +62,8 @@ app.use('/api/producto', productoRoutes);
 app.use('/api/unidad_medida', unidadMedidaRoutes);
 app.use('/api/requerimientos', requerimientosRoutes)
 
+app.use('/api/producto_detalle', productoDetalleRoutes);
+app.use('/api/clientes', clientesRoutes); // Agrega las rutas de pedidos
 // Swagger Docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 

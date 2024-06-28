@@ -54,19 +54,13 @@ router.get('/get/:id', almacenProductoController.obtenerAlmacenProductoPorId);
  *           schema:
  *             type: object
  *             properties:
+ *               numero_serie:
+ *                 type: string
+ *               lote:
+ *                 type: string
  *               almacen_id:
  *                 type: string
  *               producto_id:
- *                 type: string
- *               cantidad:
- *                 type: number
- *               unidad_medida_id:
- *                 type: string
- *               estado:
- *                 type: string
- *               codigo_origen_id:
- *                 type: string
- *               tipo_origen:
  *                 type: string
  *     responses:
  *       200:
