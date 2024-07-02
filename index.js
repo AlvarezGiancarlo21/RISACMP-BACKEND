@@ -18,7 +18,6 @@ const productoRoutes = require('./api/routes/productoRoutes')
 
 const requerimientosRoutes = require('./api/routes/requerimientosRoutes');
 const unidadMedidaRoutes = require('./api/routes/unidadMedidaRoutes');
-const productoDetalleRoutes = require('./api/routes/productoDetalleRoutes');
 const clientesRoutes = require('./api/routes/clientesRoutes'); // Importa las nuevas rutas de clientes
 const facturaRoutes = require('./api/routes/facturaRoutes')
 const notaCreditoRoutes = require('./api/routes/notaCreditoRoutes');
@@ -63,7 +62,6 @@ app.use('/api/producto', productoRoutes);
 app.use('/api/unidad_medida', unidadMedidaRoutes);
 app.use('/api/requerimientos', requerimientosRoutes)
 
-app.use('/api/producto_detalle', productoDetalleRoutes);
 app.use('/api/clientes', clientesRoutes); // Agrega las rutas de pedidos
 app.use('/api/factura', facturaRoutes);
 app.use('/api/nota-credito', notaCreditoRoutes);

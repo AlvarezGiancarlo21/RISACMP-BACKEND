@@ -193,3 +193,16 @@ exports.getPedidoById = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+
+exports.eliminarOrdenTrabajo = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const pedido = await Pedido.findByIdAndDelete(id);
+      if (!pedido) {
+          return res.status(404).json({ message: "Pedido no encontrado" });
+      }
+      res.status(200).json({ message: "Pedido eliminado exitosamente" });
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+}

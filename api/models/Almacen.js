@@ -10,14 +10,6 @@ const almacenSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        isActive: { // True = Activo, False = Inactivo
-            type: Boolean,
-            required: true,
-        },
-        tipo_almacen: { // 1. Almacén de productos finalizados 2. Almacén de productos en proceso 3. Almacén de mermas
-            type: String,
-            required: true,
-        },
     },
     {
         timestamps: true,

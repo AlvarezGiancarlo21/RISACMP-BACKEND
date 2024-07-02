@@ -165,6 +165,29 @@ router.delete('/:id', providerController.deleteProviderById);
  */
 router.get('/:id', providerController.getProviderById);
 
+/**
+ * @swagger
+ * /api/provider/razon-social/{razonSocial}:
+ *   get:
+ *     summary: Obtener un proveedor por ID
+ *     tags: [Provider]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del proveedor a obtener
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Retorna el proveedor solicitado
+ *       404:
+ *         description: Proveedor no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+router.get('/razon-social/:razonSocial', providerController.getProviderByRazonSocial);
+
 
 
 module.exports = router;

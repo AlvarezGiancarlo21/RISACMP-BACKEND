@@ -1,24 +1,37 @@
 const AlmacenProductoModel = require('../models/AlmacenProducto');
 const AlmacenModel = require('../models/Almacen');
 const ProductoModel = require('../models/Producto');
-const ProductoDetalleModel = require('../models/ProductoDetalle');
+const UnidadMedidaModel = require('../models/UnidadMedidaModel');
 
 const obtenerTodosLosAlmacenesProductos = async (req, res) => {
     try {
         const almacen_productos = await AlmacenProductoModel.find({});
         let datos=[];
         for (almacen_producto of almacen_productos) {
+            const almacen = await AlmacenModel.findById(almacen_producto.almacen_id)
             const producto = await ProductoModel.findById(almacen_producto.producto_id)
+            const unidad_medida = await UnidadMedidaModel.findById(producto.unidad_medida_id);
             datos.push({
                 id: almacen_producto.id,
                 numero_serie: almacen_producto.numero_serie,
                 lote: almacen_producto.lote,
-                almacen_id: almacen_producto.almacen_id,
+                almacen: {
+                    id: almacen.id,
+                    nombre: almacen.nombre,
+                    ubicacion: almacen.ubicacion,
+                },
                 producto: {
                     id: producto.id,
                     nombre: producto.nombre,
+                    tipo: producto.tipo,
+                    unidad_medida: {
+                        id: producto.unidad_medida_id,
+                        nombre:unidad_medida.nombre,
+                        simbolo:unidad_medida.simbolo,
+                    }
                 },
                 estado: almacen_producto.estado,
+                tipo_origen: almacen_producto.tipo_origen,
                 origen_id: almacen_producto.origen_id,
                 createdAt: almacen_producto.createdAt,
                 updatedAt: almacen_producto.updatedAt,
@@ -54,24 +67,20 @@ const crearAlmacenProducto = async (req, res) => {
         if (!producto) {
             return res.status(404).json({ message: "El Producto no existe" });
         }
-        let producto_detalle = await ProductoDetalleModel.find({producto_id: req.body.producto_id});
-        if (producto_detalle.length == 0) {
-            const post_producto_detalle = await ProductoDetalleModel.create({
-                producto_id: req.body.producto_id,
-                cantidad_total: 0,
-            })
-            producto_detalle = await ProductoDetalleModel.find({producto_id: req.body.producto_id});
+        const almacen_producto = await AlmacenProductoModel.findOne({numero_serie: req.body.numero_serie});
+        if (almacen_producto) {
+            return res.status(400).json({ message: "El Numero de serie ya existe" });
         }
-        if (producto_detalle[0].cantidad_total < 0) {
+        if (producto.cantidad_total < 0) {
             datos= {
                 cantidad_total: 0,
             }
-            producto_detalle = await ProductoDetalleModel.findOneAndUpdate({producto_id:req.body.producto_id}, datos, { new: true, upsert: false });
+            producto = await ProductoModel.findByIdAndUpdate(req.body.producto_id, datos, { new: true, upsert: false });
         }
         datos= {
-            cantidad_total: Number(producto_detalle[0].cantidad_total) + 1,
+            cantidad_total: Number(producto.cantidad_total) + 1,
         }
-        let resultado = await ProductoDetalleModel.findOneAndUpdate({producto_id:req.body.producto_id}, datos);
+        let resultado = await ProductoModel.findByIdAndUpdate(req.body.producto_id, datos);
         datos = {
             numero_serie: req.body.numero_serie,
             lote: req.body.lote,
@@ -117,13 +126,13 @@ const eliminarAlmacenProducto = async (req, res) => {
         if (!almacen_producto) {
             return res.status(404).json({ message: "Producto en Almacen no encontrado" });
         }
-        let producto_detalle = await ProductoDetalleModel.find({producto_id: almacen_producto.producto_id});
+        let producto = await ProductoModel.findById(almacen_producto.producto_id);
         
-        if (producto_detalle.length > 0) {
+        if (producto.cantidad_total > 0) {
             datos= {
-                cantidad_total: Number(producto_detalle[0].cantidad_total) - 1,
+                cantidad_total: Number(producto.cantidad_total) - 1,
             }
-            let resultado = await ProductoDetalleModel.findOneAndUpdate({producto_id:almacen_producto.producto_id}, datos);
+            let resultado = await ProductoModel.findByIdAndUpdate(almacen_producto.producto_id, datos);
         }
         almacen_producto = await AlmacenProductoModel.findByIdAndDelete(id);
         res.status(200).json({ message: "Producto en Almacen eliminado exitosamente" });

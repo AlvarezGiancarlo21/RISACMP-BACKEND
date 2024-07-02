@@ -94,6 +94,12 @@ router.post('/post', productoController.crearProducto);
  *                 type: string
  *               tipo:
  *                 type: string
+ *               cantidad_total:
+ *                 type: number
+ *               unidad_medida_id:
+ *                 type: string
+ *               hasReceta:
+ *                 type: boolean
  *     responses:
  *       200:
  *         description: Datos actualizados satisfactoriamente

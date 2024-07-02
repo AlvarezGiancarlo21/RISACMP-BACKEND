@@ -29,22 +29,25 @@ const facturaController = require('../controllers/facturaController');
  *               codigoFactura:
  *                 type: string
  *               productos:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                      nombre:
- *                        type: string
- *                      cantidad:
- *                        type: number
- *                      unidad:
- *                        type: string
- *                        enum: [kg, g, l, ml]
- *                      precio_unidad:
- *                        type: number
- *                      total:
- *                        type: number
- *               fechaRegistro:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     nombre:
+ *                       type: string
+ *                     cantidad:
+ *                       type: number
+ *                     unidad:
+ *                       type: string
+ *                       enum: [kg, g, l, ml]
+ *                     precio_unidad:
+ *                       type: number
+ *                     total:
+ *                       type: number
+ *               fechaEmision:
+ *                 type: string
+ *                 format: date
+ *               fechaIngreso:
  *                 type: string
  *                 format: date
  *               montoAntesImpuestos:
@@ -59,24 +62,23 @@ const facturaController = require('../controllers/facturaController');
  *       500:
  *         description: Server error
  */
-router.post('/register',facturaController.uploadS3.single('archivo'), facturaController.registerFacturas);
+router.post('/register', facturaController.uploadS3.single('archivo'), facturaController.registerFacturas);
 
 /**
  * @swagger
  * /api/factura:
  *   get:
- *     summary: Obtener todos las facturas
+ *     summary: Obtener todas las facturas
  *     tags: [Factura]
  *     responses:
  *       200:
- *         description: Retorna todos las facturas
+ *         description: Retorna todas las facturas
  *       400:
  *         description: Error
  *       500:
  *         description: Error del servidor
  */
 router.get('/', facturaController.getAllfacturas);
-
 
 /**
  * @swagger
@@ -88,18 +90,17 @@ router.get('/', facturaController.getAllfacturas);
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID de la receta a obtener
+ *         description: ID de la factura a obtener
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Retorna el proveedor solicitado
+ *         description: Retorna la factura solicitada
  *       404:
- *         description: Proveedor no encontrado
+ *         description: Factura no encontrada
  *       500:
  *         description: Error del servidor
  */
 router.get('/:id', facturaController.getFacturaById);
-
 
 module.exports = router;

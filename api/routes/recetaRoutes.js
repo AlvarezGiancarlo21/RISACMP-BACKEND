@@ -255,5 +255,27 @@ router.patch('/:id/unavailable', recetaController.unavailableRecetaById);
  */
 router.get('/:id', recetaController.getRecetaById);
 
+/**
+ * @swagger
+ * /api/receta/delete/{id}:
+ *   delete:
+ *     summary: Eliminar una Receta
+ *     tags: [Receta]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la Receta a eliminar
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Datos eliminados satisfactoriamente
+ *       400:
+ *         description: Error
+ *       500:
+ *         description: Server error
+ */
+router.delete('/delete/:id', recetaController.eliminarReceta);
 
 module.exports = router;

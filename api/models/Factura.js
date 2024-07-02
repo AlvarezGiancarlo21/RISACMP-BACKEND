@@ -48,9 +48,13 @@ const facturaSchema = new mongoose.Schema({
       required: false
     }
   }],
-  fechaRegistro: {
+  fechaEmision: {
     type: Date,
-    required: true
+    required: true,
+  },
+  fechaIngreso: {
+    type: Date,
+    required: true,
   },
   montoAntesImpuestos: {
     type: Number,

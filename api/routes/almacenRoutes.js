@@ -58,10 +58,6 @@ router.get('/get/:id', almacenController.obtenerAlmacenPorId);
  *                 type: string
  *               ubicacion:
  *                 type: string
- *               isActive:
- *                 type: boolean
- *               tipo_almacen:
- *                 type: string
  *     responses:
  *       200:
  *         description: Datos creados satisfactoriamente
@@ -95,10 +91,6 @@ router.post('/post', almacenController.crearAlmacen);
  *               nombre:
  *                 type: string
  *               ubicacion:
- *                 type: string
- *               isActive:
- *                 type: boolean
- *               tipo_almacen:
  *                 type: string
  *     responses:
  *       200:

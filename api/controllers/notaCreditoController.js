@@ -1,4 +1,5 @@
 const NotaCredito = require('../models/NotaCredito');
+const Producto = require('../models/Producto');
 
 // Crear una nueva nota de crédito
 exports.createNotaCredito = async (req, res) => {
@@ -30,6 +31,14 @@ exports.createNotaCredito = async (req, res) => {
       monto_nc,
       monto_diferencia
     });
+
+    for (let producto of productos) {
+      await Producto.findOneAndUpdate(
+        { nombre: producto.nombre },
+        { $inc: { cantidad_total: -producto.cantidad_nc } },
+        { new: true }
+      );
+    }
 
     await nuevaNotaCredito.save();
     res.status(201).json({ msg: "Nota de crédito creada con éxito", notaCredito: nuevaNotaCredito });

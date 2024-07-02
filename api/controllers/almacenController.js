@@ -24,7 +24,11 @@ const obtenerAlmacenPorId = async (req, res) => {
 
 const crearAlmacen = async (req, res) => {
     try {
-        const almacen = await AlmacenModel.create(req.body);
+        const almacen = await AlmacenModel.findOne({nombre: req.body.nombre});
+        if (almacen) {
+            return res.status(400).json({ message: "El nombre de Almacén ya existe" });
+        }
+        almacen = await AlmacenModel.create(req.body);
         res.status(200).json(almacen);
     } catch (error) {
         res.status(500).json({ message: error.message })

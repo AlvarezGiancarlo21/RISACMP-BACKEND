@@ -10,8 +10,16 @@ const productosSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        cantidad_total: {
+            type: Number,
+            required: true,
+        },
         unidad_medida_id: {
             type: String,
+            required: true,
+        },
+        hasReceta: {
+            type: Boolean,
             required: true,
         },
     },

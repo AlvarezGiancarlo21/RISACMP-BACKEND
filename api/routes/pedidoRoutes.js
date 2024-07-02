@@ -165,4 +165,27 @@ router.put('/:id', pedidoController.updatePedidoById);
  */
 router.get('/:id', pedidoController.getPedidoById);
 
+/**
+ * @swagger
+ * /api/pedidos/delete/{id}:
+ *   delete:
+ *     summary: Eliminar un Pedido
+ *     tags: [Pedido]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del Pedido a eliminar
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Datos eliminados satisfactoriamente
+ *       400:
+ *         description: Error
+ *       500:
+ *         description: Server error
+ */
+router.delete('/delete/:id', pedidoController.eliminarOrdenTrabajo);
+
 module.exports = router;

@@ -225,3 +225,16 @@ exports.getRecetaById = async (req, res) => {
     res.status(500).send("Error del servidor");
   }
 };
+
+exports.eliminarReceta = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const receta = await Receta.findByIdAndDelete(id);
+      if (!receta) {
+          return res.status(404).json({ message: "Receta no encontrada" });
+      }
+      res.status(200).json({ message: "Receta eliminada exitosamente" });
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+}

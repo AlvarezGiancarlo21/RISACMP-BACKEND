@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const ordenTrabajoSchema = new mongoose.Schema(
     {
+        codigo_Orden: {
+            type: String,
+            required: true,
+        },
         pedido_id: {
             type: String,
             required: true,

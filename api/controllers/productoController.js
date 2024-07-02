@@ -12,10 +12,13 @@ const obtenerTodosLosProductos = async (req, res) => {
                 id: producto.id,
                 nombre: producto.nombre,
                 tipo: producto.tipo,
+                cantidad_total: producto.cantidad_total,
                 unidad_medida: {
+                    id: unidad_medida.id,
                     nombre: unidad_medida.nombre,
                     simbolo: unidad_medida.simbolo,
                 },
+                hasReceta: producto.hasReceta,
             }
             i++;
         }
@@ -54,7 +57,9 @@ const crearProducto = async (req, res) => {
         datos = {
             nombre: req.body.nombre,
             tipo: req.body.tipo,
+            cantidad_total: 0,
             unidad_medida_id: req.body.unidad_medida_id,
+            hasReceta: false,
         }
         const producto = await ProductoModel.create(datos);
         res.status(200).json(producto);

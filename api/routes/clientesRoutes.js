@@ -100,7 +100,7 @@ router.get('/export-pdf', clientesController.exportClientesToPDF);
  *           schema:
  *             type: object
  *             properties:
- *              codigoCliente:
+ *               codigoCliente:
  *                 type: string
  *               nombres:
  *                 type: string
