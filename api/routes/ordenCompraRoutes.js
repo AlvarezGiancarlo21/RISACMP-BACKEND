@@ -1,6 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const ordenCompraController = require('../controllers/ordenCompraController');
+const ordenCompraController = require("../controllers/ordenCompraController");
+
+const upload = ordenCompraController.upload;
+const uploadS3 = ordenCompraController.uploadS3;
 
 /**
  * @swagger
@@ -16,7 +19,7 @@ const ordenCompraController = require('../controllers/ordenCompraController');
  *       500:
  *         description: Server error
  */
-router.get('/get/all', ordenCompraController.obtenerTodosLasOrdenesDeCompra);
+router.get("/get/all", ordenCompraController.obtenerTodosLasOrdenesDeCompra);
 
 /**
  * @swagger
@@ -39,7 +42,7 @@ router.get('/get/all', ordenCompraController.obtenerTodosLasOrdenesDeCompra);
  *       500:
  *         description: Server error
  */
-router.get('/get/:id', ordenCompraController.obtenerOrdenCompraPorId);
+router.get("/get/:id", ordenCompraController.obtenerOrdenCompraPorId);
 
 /**
  * @swagger
@@ -50,38 +53,68 @@ router.get('/get/:id', ordenCompraController.obtenerOrdenCompraPorId);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
- *                 type: string
- *               archivo:
- *                 type: string
- *               fecha_subida:
- *                 type: string
- *                 format: date
+ *                 nro:
+ *                   type: number
+ *                 nombre:
+ *                    type: string
+ *                 archivo:
+ *                   type: string
+ *                   format: binary
+ *                 user:
+ *                   type: string
+ *                 fecha_subida:
+ *                   type: string
+ *                   format: date
+ *                 proveedor:
+ *                   type: string
+ *                 productos:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                      nombre:
+ *                        type: string
+ *                      cantidad:
+ *                        type: number
+ *                      unidad:
+ *                        type: string
+ *                        enum: [kg, g, l, ml]
+ *                      precio_unidad:
+ *                        type: number
+ *                      total:
+ *                        type: number
+ *                 estado:
+ *                   type: string
  *     responses:
  *       200:
- *         description: Datos creados satisfactoriamente
+ *         description: User registered successfully
  *       400:
- *         description: Error
+ *         description: User already exists
  *       500:
  *         description: Server error
  */
-router.post('/post', ordenCompraController.crearOrdenCompra);
+
+router.post(
+  "/post",
+  ordenCompraController.uploadS3.single("archivo"),
+  ordenCompraController.crearOrdenCompra
+);
 
 /**
  * @swagger
- * /api/merma/put/{id}:
+ * /api/orden-compra/{id}:
  *   put:
- *     summary: Actualizar una merma
- *     tags: [Merma]
+ *     summary: Actualizar una orden de compra por ID
+ *     tags: [OrdenCompra]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID de la merma a actualizar
+ *         description: ID de la orden de compra a actualizar
  *         schema:
  *           type: string
  *     requestBody:
@@ -91,47 +124,44 @@ router.post('/post', ordenCompraController.crearOrdenCompra);
  *           schema:
  *             type: object
  *             properties:
+ *               nro:
+ *                 type: number
  *               nombre:
  *                 type: string
- *               cantidad:
- *                 type: number
- *               fecha_conteo:
- *                 type: date
- *               responsable_encargado:
+ *               archivo:
  *                 type: string
- *               motivo:
+ *               user:
+ *                 type: string
+ *               fecha_subida:
+ *                 type: string
+ *               proveedor:
+ *                 type: string
+ *               productos:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                      nombre:
+ *                       type: string
+ *                      cantidad:
+ *                       type: number
+ *                      unidad:
+ *                       type: string
+ *                       enum: [kg, g, l, ml]
+ *                      precio_unidad:
+ *                          type: number
+ *                      total:
+ *                          type: number
+ *               estado:
  *                 type: string
  *     responses:
  *       200:
- *         description: Datos actualizados satisfactoriamente
- *       400:
- *         description: Error
+ *         description: Orden de compra actualizada exitosamente
+ *       404:
+ *         description: Orden de compra no encontrada
  *       500:
- *         description: Server error
+ *         description: Error del servidor
  */
-//router.put('/put/:id', mermaController.actualizarMerma);
-
-/**
- * @swagger
- * /api/merma/delete/{id}:
- *   delete:
- *     summary: Eliminar una merma
- *     tags: [Merma]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID de la merma a eliminar
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Datos eliminados satisfactoriamente
- *       400:
- *         description: Error
- *       500:
- *         description: Server error
- */
-//router.delete('/delete/:id', mermaController.eliminarMerma);
+router.put("/:id", ordenCompraController.editarOrdenCompraPorId);
 
 module.exports = router;

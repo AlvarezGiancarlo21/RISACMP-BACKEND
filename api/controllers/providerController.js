@@ -168,3 +168,20 @@ exports.getProviderById = async (req, res) => {
         res.status(500).send('Error del servidor');
     }
 };
+
+exports.getProviderByRazonSocial = async (req, res) => {
+    const { razonSocial } = req.params;
+
+    try {
+        const provider = await Provider.findOne({ razonSocial });
+
+        if (!provider) {
+            return res.status(404).json({ msg: 'Proveedor no encontrado' });
+        }
+
+        res.json(provider);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Error del servidor');
+    }
+};
